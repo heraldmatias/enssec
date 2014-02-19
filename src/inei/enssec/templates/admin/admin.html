@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block css %}
+    <!-- Important. For Theming change primary-color variable in main.css  -->
+    <!--[if lte IE 7]>
+    <script src="{% static 'theme/css/icomoon-font/lte-ie7.js' %}">
+    </script>
+    <![endif]-->
+    <style type="text/css">
+
+        .oculto {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block contenido %}
+
+    <!-- bootstrap css -->
+    <div class="container-fluid">
+        <div class="dashboard-wrapper">
+            <div class="left-sidebar">
+                <div class="row-fluid">
+                    <div class="span8 offset2">
+                        <div class="widget">
+                            <div class="widget-header">
+                                <div class="title">
+                                    Administrador
+                                    <span class="mini-title"></span>
+                                </div>
+                    <span class="tools">
+                      <a data-original-title="Ingrese sus datos" class="fs1" aria-hidden="true" data-icon=""
+                         data-placement="bottom"></a>
+                    </span>
+                            </div>
+                            <div class="widget-body" >
+                                <form class="form-horizontal no-margin" id="id_form" name="form" method="GET">
+
+                                <div class="row-fluid">
+                                    <div class="span8">
+                                        <div class="control-group">
+                                            <label class="control-label" for="id_experiencia">
+                                                ODEI:
+                                            </label>
+
+                                            <div class="controls">
+                                                <select name='odei'>
+                                                    <option value="">TODOS</option>
+                                                    {% for odei in odeis %}
+                                                        <option value="{{ odei }}">{{ odei }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <input type="submit" value="buscar" class="btn btn-primary">
+                                                <a href="{% url 'reporte' %}" class="btn btn-primary">Imprimir</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Postulante</th>
+                                            <th>Estado 1</th>
+                                            <th>Estado 2</th>
+                                            <th>Estado 3</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for object in objects %}
+                                            <tr>
+                                                <td>{{ object.usuario }}</td>
+                                                <td>{{ object.get_estado1|safe }}</td>
+                                                <td>{{ object.get_estado2|safe }}</td>
+                                                <td>{{ object.get_estado3 }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!--/.fluid-container-->
+    </div>
+{% endblock %}

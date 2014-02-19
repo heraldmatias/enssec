@@ -1,0 +1,2 @@
+{% for row in data %}"{{ row.get_estado1|addslashes }}", "{{ row.get_estado2|addslashes }}", "{{ row.get_estado3|addslashes }}"
+{% endfor %}

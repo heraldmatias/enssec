@@ -1,0 +1,352 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load url from future %}
+{% block css %}
+    <!-- Important. For Theming change primary-color variable in main.css  -->
+    <!--[if lte IE 7]>
+    <script src="{% static 'theme/css/icomoon-font/lte-ie7.js' %}">
+    </script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="{% static 'endes/css/chosen.min.css' %}" />
+    <style type="text/css">
+        .borde_fila{
+            border-top: 1px solid #CFCFCF;
+            border-left: 1px solid #CFCFCF;
+            border-right: 1px solid #CFCFCF;
+        }
+
+        .borde_cabecera{
+            border: 1px solid #CFCFCF;
+            padding: 10px 10px 10px 10px;
+        }
+
+        #fila-ultima.borde_fila{
+            border-bottom: 1px solid #CFCFCF;
+            border-left: 1px solid #CFCFCF;
+            border-right: 1px solid #CFCFCF;
+            border-top: 1px solid #CFCFCF;
+        }
+
+        .celda{
+            border-right: 1px solid #CFCFCF;
+            padding: 10px 10px 10px 10px;
+        }
+
+        #celda-ultima.celda{
+            border-right: 1px solid #CFCFCF;
+            padding: 10px 10px 10px 10px;
+            height: 240px;
+        }
+
+        .pregunta{
+            font-weight: bold;
+        }
+        #id_fecha_day{
+            width: 50px;;
+        }
+        #id_fecha_month{
+            width: 90px;;
+        }
+        #id_fecha_year{
+            width: 70px;;
+        }
+    </style>
+{% endblock %}
+{% block contenido %}
+
+    <!-- bootstrap css -->
+    <div class="container-fluid">
+        <div class="dashboard-wrapper">
+            <div class="left-sidebar">
+                <div class="row-fluid">
+                    <div class="span8 offset2">
+                        <div class="widget">
+                            <div class="widget-header">
+                                <div class="title">
+                                    Cuestionario
+                      <span class="mini-title">
+                        Complete la siguiente información
+                      </span>
+                                </div>
+                    <span class="tools">
+                      <a data-original-title="Ingrese sus datos" class="fs1" aria-hidden="true" data-icon="" data-placement="bottom"></a>
+                    </span>
+                            </div>
+                            <div class="widget-body">
+
+                                <form class="form-horizontal no-margin" id="id_form" name="form">
+                                    {% csrf_token %}
+                                    <div class="tab-content" id="myTabContent">
+                                        <div id="step1" class="tab-pane fade active in">
+                                            <div class="row-fluid">
+                                                <div style="float: right">
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="id">
+                                                            FICHA N°
+                                                        </label>
+                                                        <div class="controls">
+                                                            {{ form.id }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row-fluid">
+                                                <div class="span12">
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td >{{ form.consulado_list.label_tag }}</td><td >{{ form.consulado_list }}</td>
+                                                        <td colspan="2" style="width: 15%">{{ form.fecha.label_tag }}</td><td style="width: 15%" colspan="2">{{ form.fecha }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="9">
+                                                            <h5 style="text-align: center">Estimado compatriota:</h5>
+                                                            <p>
+                                                                Reciba usted un fraternal saludo del Ministerio de Relaciones Exteriores del Perú. Necesitamos de su colaboración
+                                                                llenando este breve cuestionario. Esta información nos permitirá mejorar la atención que le brindamos en nuestros Consulados.
+                                                            </p>
+                                                            <h6 style="text-align: center">Por favor seleccione la respuesta correspondiente a cada una de las preguntas:</h6>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td ><label class="control-label">Continente de Residencia</label></td>
+                                                        <td > <input type="text" readonly name="continente" id="id_continente"></td>
+                                                        <td colspan="2" >{{ form.pais.label_tag }}</td><td colspan="2" >{{ form.pais }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >{{ form.ciudadResidencia.label_tag }}</td><td>{{ form.ciudadResidencia }}</td>
+                                                        <td>{{ form.edad.label_tag }}</td><td>{{ form.edad }}</td><td>{{ form.sexo.label_tag }}</td><td>{{ form.sexo }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            </div></div>
+
+                                            <br>
+                                            <div class="row-fluid borde_fila">
+                                                <div class="span6 celda">
+                                                    <span class="pregunta" id="id_nu_respuesta1">1.- ¿CUÁL ES EL MOTIVO POR EL QUE USTED ACUDIÓ, EL DÍA DE HOY AL CONSULADO?</span>
+                                                    <h6>(Cicule una o más alternativas)</h6>
+                                                    {{ form.nu_respuesta1 }}
+                                                    <div style="text-align: center;">
+                                                        {{ form.no_respuesta1_6 }}<br>
+                                                        <span>(Especifique)</span>
+                                                    </div>
+                                                </div>
+                                                <div class="span6 celda">
+                                                    <span class="pregunta" id="id_nu_respuesta4">4.- ¿COMO CONSIDERA LAS CONDICIONES DEL LOCAL CONSULAR (INFRAESTRUCTURA, EQUIPAMIENTO Y MOBILIARIO)?</span>
+                                                    {{ form.nu_respuesta4 }}
+                                                </div>
+                                            </div>
+                                            <div class="row-fluid borde_fila">
+                                                <div class="span6 celda">
+                                                    <span class="pregunta" id="id_nu_respuesta2">2.- ¿CÓMO FUE EL TRATO DEL PERSONAL QUE LO ATENDIÓ?</span>
+                                                    {{ form.nu_respuesta2 }}
+                                                </div>
+                                                <div class="span6 celda">
+                                                    <span class="pregunta" id="id_nu_respuesta5">5.- ¿SE SIENTE SATISFECHO CON EL SERVICIO QUE BRINDA LA OFICINA CONSULAR?</span>
+                                                    {{ form.nu_respuesta5 }}
+                                                </div>
+                                            </div>
+                                            <div id="fila-ultima" class="row-fluid borde_fila">
+                                                <div id="celda-ultima" class="span6 celda">
+                                                    <span class="pregunta" id="id_nu_respuesta3">3.- ¿CÓMO CONSIDERA EL TIEMPO DE ESPERA PARA SER ATENDIDO?</span>
+                                                    {{ form.nu_respuesta3 }}
+                                                </div>
+                                                <div class="span6 celda">
+                                                    <span class="pregunta" id="id_nu_respuesta6">6.- ¿CÓMO CREE USTED QUE SE PUEDE MEJORAR EL SERVICIO CONSULAR?</span>
+                                                    {{ form.nu_respuesta6 }}
+                                                    <div style="text-align: center;">
+                                                        {{ form.no_respuesta6 }}<br>
+                                                        <span>(Especifique)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td >{{ form.encuestado.label_tag }}</td><td colspan="2">{{ form.encuestado }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >{{ form.dni.label_tag }}</td><td>{{ form.dni }}</td><td>(*) Información confidencial, sólo para fines estadísticos</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            <h5 style="text-align: center">Gracias por su valiosa colaboración.</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >{{ form.observacion.label_tag }}</td><td colspan="2">{{ form.observacion }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="next-prev-btn-container pull-right" style="margin-right: 10px;">
+                                            <a data-original-title="" href="javascript: save_cuestionario();"
+                                               class="button next" >
+                                                Continuar
+                                            </a>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!--/.fluid-container-->
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'endes/js/chosen.jquery.min.js' %}" type="text/javascript"></script>
+    <script type="text/javascript">
+
+    $(document).on('ready', function(e){
+        $("#id_consulado_list").chosen({
+            no_results_text: "No se encontro el proyecto!",
+            allow_single_deselect: true
+        });
+        $("#id_pais").chosen({
+            no_results_text: "No se encontro el proyecto!",
+            allow_single_deselect: true
+        });
+    });
+
+    function activate_tooltips(){
+        $('input').tooltip('hide');
+        $('select').tooltip('hide');
+    }
+
+    function save_cuestionario(){
+        var data = $('#id_form').serialize();
+
+            var options = {
+                type: 'POST',
+                url: "{% url 'cuestionario1' %}",
+                dataType: 'json',
+                async: true,
+                data: data,
+                beforeSend: function() {
+
+                }
+            };
+            var posting = $.ajax(options);
+
+            posting.done(function(data, textStatus, jqXHR) {
+                if(data['success']){
+                    location.href = '';
+                }else{
+                    //activate_tooltips();
+                    $('.alert-error').removeClass('alert-error');
+                    var msg='Corrija los errores marcados en rojo porfavor!';
+                    $.each(data['data'],function(k,v){
+                        //msg += k + ' - ' + v + '\n';
+                        console.log(k +'  '+ v);
+                        var el = $('#id_'+k);
+                        if(k === 'nu_respuesta1'){
+                            el.addClass('alert-error');
+                        }
+                        if(k === 'nu_respuesta2'){
+                            el.addClass('alert-error');
+                        }
+                        if(k === 'nu_respuesta3'){
+                            el.addClass('alert-error');
+                        }
+                        if(k === 'nu_respuesta4'){
+                            el.addClass('alert-error');
+                        }
+                        if(k === 'nu_respuesta5'){
+                            el.addClass('alert-error');
+                        }
+                        if(k === 'nu_respuesta6'){
+                            el.addClass('alert-error');
+                        }
+                    });
+                    //el.addClass('alert-error');
+                    alert(msg);
+                }
+            })
+            .fail(function(data, textStatus, jqXHR) {
+                alert('Ha ocurrido un error inesperado');
+            });
+
+    }
+
+    $('#id_region').on('change', function(e){
+        var data = {
+            region: $(this).val()
+        };
+        var options = {
+            type: 'POST',
+            url:''
+            ,
+            dataType: 'json',
+            async: true,
+            data: data,
+            beforeSend: function() {
+
+            }
+        };
+        var posting = $.ajax(options);
+        var provincias = $('#id_odei');
+        posting.done(function(data, textStatus, jqXHR) {
+            provincias.find('option').remove();
+            $('#id_todei').val('');
+            provincias.append($('<option>', {
+                value: '',
+                text : '----------'
+            }));
+
+            if(data['success']){
+                $.each(data['data'], function(k, v){
+                    provincias.append($('<option>', {
+                        value: v['id'],
+                        text : v['descripcion']
+                    }));
+                });
+            }
+        })
+        .fail(function(data, textStatus, jqXHR) {
+            alert('Ha ocurrido un error inesperado');
+        });
+    });
+
+    $('#id_odei').on('change', function(e){
+        var data = {
+            region: $('#id_region').val(),
+            provincia: $(this).val()
+        };
+
+        var options = {
+            type: 'POST',
+            url: "",
+            dataType: 'json',
+            async: true,
+            data: data,
+            beforeSend: function() {
+
+            }
+        };
+        var posting = $.ajax(options);
+
+        posting.done(function(data, textStatus, jqXHR) {
+            $('#id_todei').val('');
+            if(data['success']){
+                $('#id_todei').val(data['data']);
+            }
+        })
+        .fail(function(data, textStatus, jqXHR) {
+            alert('Ha ocurrido un error inesperado');
+        });
+    });
+
+
+    </script>
+{% endblock %}

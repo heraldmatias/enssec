@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block contenido %}
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                <div class="widget-body">
+                    <div class="span4">&nbsp;</div>
+                    <div class="span4">
+                        <div class="sign-in-container">
+                            <form action="" class="login-wrapper" method="post">
+                                {% csrf_token %}
+                                <div class="header">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <h3>Iniciar Sesión<img src="{% static 'theme/img/logo.png' %}" alt="Logo" class="pull-right"></h3>
+
+                                            <p>Ingrese sus credenciales por favor.</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="content">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <!--<input class="input span12 email" placeholder="Email" required="required"
+                                                   value="" type="email">-->
+                                            {{ form.username }}
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <!--<input class="input span12 password" placeholder="Password"
+                                                   required="required" type="password">-->
+                                            {{ form.password }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <input class="btn btn-danger" name="Login" value="Iniciar" type="submit">
+                                    <a data-original-title="" class="link" href="#">Olvido su contraseña</a>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="span3">&nbsp;</div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+    var regexdni = new RegExp('^[0-9]{8}$'),
+        regexfecha = new RegExp('^[0-9]{1,2}-[0-9]{1,2}-[1]{1}[9]{1}[0-9]{2}$');
+
+    $('.login-wrapper').on('submit', function(){
+        if(!regexdni.test($('#id_username').val())){
+            alert('ingrese un DNI valido');
+            return false;
+        }
+        if(!regexfecha.test($('#id_password').val())){
+            alert('ingrese su fecha de nacimiento correcta');
+            return false;
+        }
+        return true;
+    });
+
+    $('input').tooltip('hide');
+
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">
+    <link rel="stylesheet" type="text/css" href="{% static 'theme/icomoon/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'theme/css/main.css' %}" />
+    <!--<link href="{% static 'theme/css/wysiwyg/bootstrap-wysihtml5.css' %}" rel="stylesheet">
+    <link href="{% static 'theme/css/wysiwyg/wysiwyg-color.css' %}" rel="stylesheet">
+    <link href="{% static 'theme/css/charts-graphs.css' %}" rel="stylesheet">
+    <link href="{% static 'theme/css/clockface.css' %}" rel="stylesheet">
+    <link href="{% static 'theme/css/timepicker.css' %}" rel="stylesheet">-->
+    {% block css %}{% endblock %}
+    <title>{% block titulo %}ENCUESTA DE SATISFACCIÓN SOBRE LOS SERVICIOS CONSULARES 2014{% endblock %}</title>
+</head>
+<body {% block body_events %}{% endblock %}>
+{% include 'includes/header.html' %}
+{% block contenido %}
+{% endblock %}
+{% include 'includes/footer.html' %}
+    <script type="text/javascript" src="{% static 'theme/js/html5.js' %}"></script>
+    <script src="{% static 'theme/js/jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'theme/js/bootstrap.js' %}" type="text/javascript"></script>
+{% block js %}
+{% endblock %}
+</body>
+</html>
