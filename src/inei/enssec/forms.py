@@ -30,12 +30,12 @@ def getConsuladoChoices():
     if cache.get('consulados'):
         choices = cache.get('consulados')
     else:
-        choices = [('%s-%s' % (c[0], c[1]), c[2]) for c in Consulado.objects.all().values_list('id','continente','nombre')]
+        choices = [('%s-%s-%s' % (c[0], c[1], c[2]), c[3]) for c in Consulado.objects.all().values_list('id', 'continente', 'continente__nombre', 'nombre')]
         choices.insert(0, ('', '-----------------------------'))
         cache.set('consulados', choices, 60)
     return choices
 
-# Widget
+
 class CSICheckboxSelectMultiple(CheckboxSelectMultiple):
     def value_from_datadict(self, data, files, name):
         # Return a string of comma separated integers since the database, and

@@ -81,9 +81,7 @@
                                             <div class="row-fluid">
                                                 <div style="float: right">
                                                     <div class="control-group">
-                                                        <label class="control-label" for="id">
-                                                            FICHA N°
-                                                        </label>
+                                                        <label class="control-label" id="lid_id" for="id_id">Ficha N°:</label>
                                                         <div class="controls">
                                                             {{ form.id }}
                                                         </div>
@@ -95,8 +93,8 @@
                                             <table class="table table-bordered">
                                                 <tbody>
                                                     <tr>
-                                                        <td >{{ form.consulado_list.label_tag }}</td><td >{{ form.consulado_list }}</td>
-                                                        <td colspan="2" style="width: 15%">{{ form.fecha.label_tag }}</td><td style="width: 15%" colspan="2">{{ form.fecha }}</td>
+                                                        <td><label id="lid_consulado_list" for="id_consulado_list">Nombre del Consulado:</label></td><td >{{ form.consulado_list }}</td>
+                                                        <td colspan="2" style="width: 15%"><label id="lid_fecha" for="id_fecha_day">Fecha de la Encuesta:</label></td><td style="width: 15%" colspan="2">{{ form.fecha }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="9">
@@ -109,13 +107,13 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td ><label class="control-label">Continente de Residencia</label></td>
-                                                        <td > <input type="text" readonly name="continente" id="id_continente"></td>
-                                                        <td colspan="2" >{{ form.pais.label_tag }}</td><td colspan="2" >{{ form.pais }}</td>
+                                                        <td><label id="lid_continente" for="id_continente">Continente de Residencia:</label></td>
+                                                        <td> <input type="text" readonly name="continente" id="id_continente"></td>
+                                                        <td colspan="2" ><label id="lid_pais" for="id_pais">País de Residencia:</label></td><td colspan="2" >{{ form.pais }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td >{{ form.ciudadResidencia.label_tag }}</td><td>{{ form.ciudadResidencia }}</td>
-                                                        <td>{{ form.edad.label_tag }}</td><td>{{ form.edad }}</td><td>{{ form.sexo.label_tag }}</td><td>{{ form.sexo }}</td>
+                                                        <td><label id="lid_ciudadResidencia" for="id_ciudadResidencia">Ciudad de Residencia:</label></td><td>{{ form.ciudadResidencia }}</td>
+                                                        <td><label id="lid_edad" for="id_edad">Edad:</label></td><td>{{ form.edad }}</td><td><label id="lid_sexo" for="id_sexo">Sexo:</label></td><td>{{ form.sexo }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -166,10 +164,10 @@
                                             <table class="table table-bordered">
                                                 <tbody>
                                                     <tr>
-                                                        <td >{{ form.encuestado.label_tag }}</td><td colspan="2">{{ form.encuestado }}</td>
+                                                        <td><label id="lid_encuestado" for="id_encuestado">Encuestado:</label></td><td colspan="2">{{ form.encuestado }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td >{{ form.dni.label_tag }}</td><td>{{ form.dni }}</td><td>(*) Información confidencial, sólo para fines estadísticos</td>
+                                                        <td><label id="lid_dni" for="id_dni">DNI:</label></td><td>{{ form.dni }}</td><td>(*) Información confidencial, sólo para fines estadísticos</td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3">
@@ -177,7 +175,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td >{{ form.observacion.label_tag }}</td><td colspan="2">{{ form.observacion }}</td>
+                                                        <td ><label id="lid_observacion" for="id_observacion">Observación:</label></td><td colspan="2">{{ form.observacion }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -185,7 +183,7 @@
                                         <div class="next-prev-btn-container pull-right" style="margin-right: 10px;">
                                             <a data-original-title="" href="javascript: save_cuestionario();"
                                                class="button next" >
-                                                Continuar
+                                                Grabar
                                             </a>
                                             <div class="clearfix">
                                             </div>
@@ -224,6 +222,12 @@
         $('select').tooltip('hide');
     }
 
+    $("#id_consulado_list").on('change', function(){
+        var value = $(this).val();
+        value = value.split('-');
+        $('#id_continente').val(value[2]);
+    });
+
     function save_cuestionario(){
         var data = $('#id_form').serialize();
 
@@ -247,29 +251,12 @@
                     $('.alert-error').removeClass('alert-error');
                     var msg='Corrija los errores marcados en rojo porfavor!';
                     $.each(data['data'],function(k,v){
-                        //msg += k + ' - ' + v + '\n';
-                        console.log(k +'  '+ v);
-                        var el = $('#id_'+k);
-                        if(k === 'nu_respuesta1'){
-                            el.addClass('alert-error');
-                        }
-                        if(k === 'nu_respuesta2'){
-                            el.addClass('alert-error');
-                        }
-                        if(k === 'nu_respuesta3'){
-                            el.addClass('alert-error');
-                        }
-                        if(k === 'nu_respuesta4'){
-                            el.addClass('alert-error');
-                        }
-                        if(k === 'nu_respuesta5'){
-                            el.addClass('alert-error');
-                        }
-                        if(k === 'nu_respuesta6'){
-                            el.addClass('alert-error');
+                        if($.inArray(k, ['nu_respuesta1','nu_respuesta2','nu_respuesta3','nu_respuesta4','nu_respuesta5','nu_respuesta6']) !== -1){
+                            $('#id_'+k).addClass('alert-error');
+                        }else{
+                            $('#lid_'+k).addClass('alert-error');
                         }
                     });
-                    //el.addClass('alert-error');
                     alert(msg);
                 }
             })

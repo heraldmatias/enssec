@@ -25,8 +25,6 @@ class IndexView(FormView):
                 #print self.request.user
                 id = user.id or 0
                 login(self.request, user)
-                if user.is_admin:
-                    return HttpResponseRedirect('/admin/')
                 return HttpResponseRedirect(self.get_success_url())
             else:
                 #cuenta deshabilitada

@@ -30,15 +30,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    #'django.contrib.admin',
-    #'django.contrib.auth',
-    #'django.contrib.contenttypes',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
     'south',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'inei.enssec',
-    'inei.auth'
+    #'inei.auth'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,6 +90,6 @@ TEMPLATE_DIRS = (
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-AUTHENTICATION_BACKENDS = ('inei.auth.backends.EndesBackend',)
+# AUTHENTICATION_BACKENDS = ('inei.auth.backends.EndesBackend',)
 
 LOGIN_URL = '/'

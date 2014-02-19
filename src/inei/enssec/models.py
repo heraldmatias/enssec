@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 __author__ = 'holivares'
 
 from django.db import models
-from inei.auth.models import Usuario
+from django.contrib.auth.models import User
 
 
 OPTIONS1 = (
@@ -85,6 +85,7 @@ class Consulado(models.Model):
     class Meta:
         db_table = 'consulado'
         ordering = ('nombre', )
+        # unique_together = ('id', 'continente', )
 
     def __unicode__(self):
         return u'%s' % self.nombre
@@ -108,7 +109,7 @@ class Pais(models.Model):
 class Cuestionario(models.Model):
     id = models.CharField(primary_key=True, max_length=4, db_column='co_ficha')
     fecha = models.DateField(db_column='fe_encuesta', verbose_name='Fecha de la encuesta')
-    edad = models.IntegerField(blank=True, null=True, db_column='nu_edad', validators=[validate_edad])
+    edad = models.IntegerField(db_column='nu_edad', validators=[validate_edad])
     ciudadResidencia = models.CharField(max_length=70, db_column='no_ciudadresidencia')
     sexo = models.SmallIntegerField(db_column='fl_sexo', choices=SEXO)
     nu_respuesta1 = models.CommaSeparatedIntegerField(max_length=20, db_column='nu_respuesta1')
@@ -125,7 +126,7 @@ class Cuestionario(models.Model):
     pais = models.ForeignKey('Pais', db_column='co_pais', verbose_name=u'País de Residencia')
     consulado = models.ForeignKey(Consulado, db_column='co_consulado', verbose_name='Nombre del consulado')
     continente = models.ForeignKey(Continente, db_column='co_continente')
-    usuario = models.ForeignKey(Usuario, db_column='nu_usuario')
+    usuario = models.ForeignKey(User, db_column='nu_usuario')
 
     class Meta:
         db_table = 'cuestionario'
