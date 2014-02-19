@@ -217,63 +217,38 @@
         });
     });
 
-    function activate_tooltips(){
-        $('input').tooltip('hide');
-        $('select').tooltip('hide');
-    }
-
     $("#id_consulado_list").on('change', function(){
         var value = $(this).val();
         value = value.split('-');
         $('#id_continente').val(value[2]);
     });
 
+    $('#id_nu_respuesta1_5').on('change', function(){
+        var txtOtro = $('#id_no_respuesta1_6');
+        var checked = $(this).is(':checked');
+           if(checked){
+               txtOtro.prop('readonly', false);
+           }else{
+               txtOtro.val('');
+               txtOtro.prop('readonly', true);
+           }
+    });
+
+    $('input[name="nu_respuesta6"]').on('click', function(e){
+        var txtOtro = $('#id_no_respuesta6');
+        if(e.target.value==='6'){
+            txtOtro.prop('readonly', false);
+        }else{
+            txtOtro.val('');
+            txtOtro.prop('readonly', true);
+        }
+    });
+
     function save_cuestionario(){
         var data = $('#id_form').serialize();
-
-            var options = {
-                type: 'POST',
-                url: "{% url 'cuestionario1' %}",
-                dataType: 'json',
-                async: true,
-                data: data,
-                beforeSend: function() {
-
-                }
-            };
-            var posting = $.ajax(options);
-
-            posting.done(function(data, textStatus, jqXHR) {
-                if(data['success']){
-                    location.href = '';
-                }else{
-                    //activate_tooltips();
-                    $('.alert-error').removeClass('alert-error');
-                    var msg='Corrija los errores marcados en rojo porfavor!';
-                    $.each(data['data'],function(k,v){
-                        if($.inArray(k, ['nu_respuesta1','nu_respuesta2','nu_respuesta3','nu_respuesta4','nu_respuesta5','nu_respuesta6']) !== -1){
-                            $('#id_'+k).addClass('alert-error');
-                        }else{
-                            $('#lid_'+k).addClass('alert-error');
-                        }
-                    });
-                    alert(msg);
-                }
-            })
-            .fail(function(data, textStatus, jqXHR) {
-                alert('Ha ocurrido un error inesperado');
-            });
-
-    }
-
-    $('#id_region').on('change', function(e){
-        var data = {
-            region: $(this).val()
-        };
         var options = {
             type: 'POST',
-            url:''
-            ,
+            url: "{% url 'cuestionario1' %}",
             dataType: 'json',
             async: true,
             data: data,
@@ -282,57 +257,32 @@
             }
         };
         var posting = $.ajax(options);
-        var provincias = $('#id_odei');
-        posting.done(function(data, textStatus, jqXHR) {
-            provincias.find('option').remove();
-            $('#id_todei').val('');
-            provincias.append($('<option>', {
-                value: '',
-                text : '----------'
-            }));
 
+        posting.done(function(data, textStatus, jqXHR) {
             if(data['success']){
-                $.each(data['data'], function(k, v){
-                    provincias.append($('<option>', {
-                        value: v['id'],
-                        text : v['descripcion']
-                    }));
+                location.href = '';
+            }else{
+                //activate_tooltips();
+                $('.alert-error').removeClass('alert-error');
+                var msg='Corrija los errores marcados en rojo porfavor!';
+                $.each(data['data'],function(k,v){
+                    if($.inArray(k, ['nu_respuesta1','nu_respuesta2','nu_respuesta3','nu_respuesta4','nu_respuesta5','nu_respuesta6']) !== -1){
+                        $('#id_'+k).addClass('alert-error');
+                    }else if (k === 'no_respuesta1_6'){
+                        $('#id_nu_respuesta1').addClass('alert-error');
+                    }else if (k === 'no_respuesta6'){
+                        $('#id_nu_respuesta6').addClass('alert-error');
+                    }else{
+                        $('#lid_'+k).addClass('alert-error');
+                    }
                 });
+                alert(msg);
             }
         })
         .fail(function(data, textStatus, jqXHR) {
             alert('Ha ocurrido un error inesperado');
         });
-    });
-
-    $('#id_odei').on('change', function(e){
-        var data = {
-            region: $('#id_region').val(),
-            provincia: $(this).val()
-        };
-
-        var options = {
-            type: 'POST',
-            url: "",
-            dataType: 'json',
-            async: true,
-            data: data,
-            beforeSend: function() {
-
-            }
-        };
-        var posting = $.ajax(options);
-
-        posting.done(function(data, textStatus, jqXHR) {
-            $('#id_todei').val('');
-            if(data['success']){
-                $('#id_todei').val(data['data']);
-            }
-        })
-        .fail(function(data, textStatus, jqXHR) {
-            alert('Ha ocurrido un error inesperado');
-        });
-    });
+    }
 
 
     </script>

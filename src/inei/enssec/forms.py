@@ -77,6 +77,11 @@ class CuestionarioForm(forms.ModelForm):
         super(CuestionarioForm, self).__init__(*args, **kwargs)
         self.fields['consulado_list'] = forms.ChoiceField(choices=getConsuladoChoices())
         self.fields['nu_respuesta1'] = CSIMultipleChoiceField(choices=OPTIONS1)
+        if self.data.get('nu_respuesta1'):
+            if '6' in self.data.get('nu_respuesta1'):
+                self.fields['no_respuesta1_6'].required = True
+        if self.data.get('nu_respuesta6') == '6':
+            self.fields['no_respuesta6'].required = True
 
     class Meta:
         model = Cuestionario
@@ -87,8 +92,8 @@ class CuestionarioForm(forms.ModelForm):
             'nu_respuesta4': RadioSelect(renderer=RadioFieldRenderer2),
             'nu_respuesta5': RadioSelect(renderer=RadioFieldRenderer2),
             'nu_respuesta6': RadioSelect(renderer=RadioFieldRenderer2),
-            'no_respuesta6': forms.TextInput(attrs={'class': 'span12'}),
-            'no_respuesta1_6': forms.TextInput(attrs={'class': 'span12'}),
+            'no_respuesta6': forms.TextInput(attrs={'class': 'span12', 'readonly': 'readonly'}),
+            'no_respuesta1_6': forms.TextInput(attrs={'class': 'span12', 'readonly': 'readonly'}),
             'fecha': SelectDateWidget(),
             'edad': forms.TextInput(attrs={'class': 'span12'}),
             'sexo': forms.Select(attrs={'class': 'span12'}),
