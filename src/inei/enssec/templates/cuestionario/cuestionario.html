@@ -53,7 +53,9 @@
     </style>
 {% endblock %}
 {% block contenido %}
-
+    <div style="position: absolute; right: 20px; top:90px;">
+        <a href="{% url 'logout' %}"><h4>Cerrar sesion</h4></a>
+    </div>
     <!-- bootstrap css -->
     <div class="container-fluid">
         <div class="dashboard-wrapper">

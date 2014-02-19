@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView
 from django.http.response import HttpResponseRedirect, HttpResponse
+from django.views.generic.base import RedirectView
 from inei.auth.forms import LoginForm
 from django.contrib.auth import login, authenticate, logout
 import json
@@ -10,6 +12,16 @@ from inei.enssec.forms import CuestionarioForm
 from inei.enssec.models import Cuestionario, Consulado, Continente
 
 __author__ = 'holivares'
+
+
+class SignOut(RedirectView):
+
+    permanent = False
+    query_string = True
+
+    def get_redirect_url(self):
+        logout(self.request)
+        return reverse('index')
 
 
 class IndexView(FormView):
@@ -32,6 +44,14 @@ class IndexView(FormView):
         else:
             #login invalido
             return self.render_to_response(self.get_context_data(form=form))
+
+    def get(self, request, *args, **kwargs):
+        """
+        Handles GET requests and instantiates a blank version of the form.
+        """
+        if request.user.is_authenticated():
+            return redirect(self.get_success_url())
+        return super(IndexView, self).get(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('cuestionario1')
