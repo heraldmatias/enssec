@@ -130,7 +130,8 @@ class Cuestionario(models.Model):
     observacion = models.TextField(blank=True, db_column='tx_observacion')
     pais = models.ForeignKey('Pais', db_column='co_pais', verbose_name=u'País de Residencia')
     consulado = models.ForeignKey(Consulado, db_column='co_consulado', verbose_name='Nombre del consulado')
-    continente = models.ForeignKey(Continente, db_column='co_continente')
+    continentePais = models.ForeignKey(Continente, db_column='co_continentepais', related_name='paisContinente')
+    continenteConsulado = models.ForeignKey(Continente, db_column='co_continenteconsulado', related_name='consuladoContinente')
     usuario = models.ForeignKey(User, db_column='nu_usuario')
 
     class Meta:

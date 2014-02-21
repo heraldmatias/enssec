@@ -79,12 +79,15 @@ class CuestionarioView(FormView):
             try:
                 consulado = Consulado.objects.get(id=_consulado[0], continente=_consulado[1])
                 pais = Pais.objects.get(id=_pais[0])
-                continente = pais.continente
+                continentePais = pais.continente
+                continenteConsulado = consulado.continente
             except Consulado.DoesNotExist, Pais.DoesNotExist:
                 consulado = Consulado()
-                continente = Continente()
+                continentePais = Continente()
+                continenteConsulado = Continente()
                 pais = Pais()
-            cuestionario = Cuestionario(usuario=self.request.user, consulado=consulado, continente=continente, pais=pais)
+            cuestionario = Cuestionario(usuario=self.request.user, consulado=consulado, continentePais=continentePais,
+                                        continenteConsulado=continenteConsulado, pais=pais)
         form = CuestionarioForm(self.request.POST, instance=cuestionario)
         if form.is_valid():
             form.save()

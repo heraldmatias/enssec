@@ -114,4 +114,4 @@ class CuestionarioForm(forms.ModelForm):
             'ciudadResidencia': forms.TextInput(attrs={'class': 'span12 texto'}),
             'id': forms.TextInput(attrs={'class': 'span6 numero'})
         }
-        exclude = ('usuario', 'continente', 'consulado', 'pais', )
+        exclude = ('usuario', 'continentePais', 'continenteConsulado', 'consulado', 'pais', )
