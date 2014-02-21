@@ -9,7 +9,7 @@ from inei.auth.forms import LoginForm
 from django.contrib.auth import login, authenticate, logout
 import json
 from inei.enssec.forms import CuestionarioForm
-from inei.enssec.models import Cuestionario, Consulado, Continente
+from inei.enssec.models import Cuestionario, Consulado, Continente, Pais
 
 __author__ = 'holivares'
 
@@ -71,16 +71,20 @@ class CuestionarioView(FormView):
 
     def save(self):
         _consulado = self.request.POST.get('consulado_list')
+        _pais = self.request.POST.get('pais_list')
         cuestionario = None
         if _consulado:
             _consulado = _consulado.split('-')
+            _pais = _pais.split('-')
             try:
                 consulado = Consulado.objects.get(id=_consulado[0], continente=_consulado[1])
-                continente = consulado.continente
-            except Consulado.DoesNotExist:
+                pais = Pais.objects.get(id=_pais[0])
+                continente = pais.continente
+            except Consulado.DoesNotExist, Pais.DoesNotExist:
                 consulado = Consulado()
                 continente = Continente()
-            cuestionario = Cuestionario(usuario=self.request.user, consulado=consulado, continente=continente)
+                pais = Pais()
+            cuestionario = Cuestionario(usuario=self.request.user, consulado=consulado, continente=continente, pais=pais)
         form = CuestionarioForm(self.request.POST, instance=cuestionario)
         if form.is_valid():
             form.save()

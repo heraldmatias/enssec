@@ -6,7 +6,7 @@ __author__ = 'holivares'
 
 from django.forms.widgets import RadioSelect, RadioFieldRenderer, CheckboxSelectMultiple, CheckboxFieldRenderer
 from django import forms
-from inei.enssec.models import Cuestionario, Consulado, Continente, OPTIONS1
+from inei.enssec.models import Cuestionario, Consulado, Continente, OPTIONS1, Pais
 from django.core.cache import cache
 
 
@@ -33,6 +33,16 @@ def getConsuladoChoices():
         choices = [('%s-%s-%s' % (c[0], c[1], c[2]), c[3]) for c in Consulado.objects.all().values_list('id', 'continente', 'continente__nombre', 'nombre')]
         choices.insert(0, ('', '-----------------------------'))
         cache.set('consulados', choices, 60)
+    return choices
+
+
+def getPaisChoices():
+    if cache.get('pais'):
+        choices = cache.get('pais')
+    else:
+        choices = [('%s-%s-%s' % (c[0], c[1], c[2]), c[3]) for c in Pais.objects.all().values_list('id', 'continente', 'continente__nombre', 'nombre')]
+        choices.insert(0, ('', '-----------------------------'))
+        cache.set('pais', choices, 60)
     return choices
 
 
@@ -76,6 +86,7 @@ class CuestionarioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CuestionarioForm, self).__init__(*args, **kwargs)
         self.fields['consulado_list'] = forms.ChoiceField(choices=getConsuladoChoices())
+        self.fields['pais_list'] = forms.ChoiceField(choices=getPaisChoices())
         self.fields['nu_respuesta1'] = CSIMultipleChoiceField(choices=OPTIONS1)
         if self.data.get('nu_respuesta1'):
             if '6' in self.data.get('nu_respuesta1'):
@@ -92,12 +103,15 @@ class CuestionarioForm(forms.ModelForm):
             'nu_respuesta4': RadioSelect(renderer=RadioFieldRenderer2),
             'nu_respuesta5': RadioSelect(renderer=RadioFieldRenderer2),
             'nu_respuesta6': RadioSelect(renderer=RadioFieldRenderer2),
-            'no_respuesta6': forms.TextInput(attrs={'class': 'span12', 'readonly': 'readonly'}),
-            'no_respuesta1_6': forms.TextInput(attrs={'class': 'span12', 'readonly': 'readonly'}),
+            'no_respuesta6': forms.TextInput(attrs={'class': 'span12 texto', 'readonly': 'readonly'}),
+            'no_respuesta1_6': forms.TextInput(attrs={'class': 'span12 texto', 'readonly': 'readonly'}),
             'fecha': SelectDateWidget(),
-            'edad': forms.TextInput(attrs={'class': 'span12'}),
+            'edad': forms.TextInput(attrs={'class': 'span12 numero', 'maxlength': 2}),
+            'dni': forms.TextInput(attrs={'class': 'span12 numero'}),
             'sexo': forms.Select(attrs={'class': 'span12'}),
-            'encuestado': forms.TextInput(attrs={'class': 'span12'}),
-            'observacion': forms.Textarea(attrs={'class': 'span12', 'rows': 2})
+            'encuestado': forms.TextInput(attrs={'class': 'span12 texto'}),
+            'observacion': forms.Textarea(attrs={'class': 'span12 texto', 'rows': 2}),
+            'ciudadResidencia': forms.TextInput(attrs={'class': 'span12 texto'}),
+            'id': forms.TextInput(attrs={'class': 'span6 numero'})
         }
-        exclude = ('usuario', 'continente', 'consulado', )
+        exclude = ('usuario', 'continente', 'consulado', 'pais', )

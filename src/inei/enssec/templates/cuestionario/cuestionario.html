@@ -111,7 +111,7 @@
                                                     <tr>
                                                         <td><label id="lid_continente" for="id_continente">Continente de Residencia:</label></td>
                                                         <td> <input type="text" readonly name="continente" id="id_continente"></td>
-                                                        <td colspan="2" ><label id="lid_pais" for="id_pais">País de Residencia:</label></td><td colspan="2" >{{ form.pais }}</td>
+                                                        <td colspan="2" ><label id="lid_pais_list" for="id_pais_list">País de Residencia:</label></td><td colspan="2" >{{ form.pais_list }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td><label id="lid_ciudadResidencia" for="id_ciudadResidencia">Ciudad de Residencia:</label></td><td>{{ form.ciudadResidencia }}</td>
@@ -208,18 +208,34 @@
     <script src="{% static 'endes/js/chosen.jquery.min.js' %}" type="text/javascript"></script>
     <script type="text/javascript">
 
+    var blank = new RegExp('\\s{2}', 'g'),
+        letter = new RegExp('^[A-Za-zñÑá-úÁ-Ú ]+$'),
+        rletter = new RegExp('[^A-Za-zñÑá-úÁ-Ú ]','g'),
+        number = new RegExp('[0-9][0-9]$'),
+        rnumber = new RegExp('[^0-9]','g');
+
     $(document).on('ready', function(e){
         $("#id_consulado_list").chosen({
             no_results_text: "No se encontro el proyecto!",
             allow_single_deselect: true
         });
-        $("#id_pais").chosen({
+        $("#id_pais_list").chosen({
             no_results_text: "No se encontro el proyecto!",
             allow_single_deselect: true
         });
+        $('#id_id').focus();
     });
 
-    $("#id_consulado_list").on('change', function(){
+    $('select').on('change', function(e){
+        var valor = $(this).val();
+        if(valor !== '' ){
+            $('#l'+this.id).removeClass('alert-error');
+        }else{
+            $('#l'+this.id).addClass('alert-error');
+        }
+    });
+
+    $("#id_pais_list").on('change', function(){
         var value = $(this).val();
         value = value.split('-');
         $('#id_continente').val(value[2]);
@@ -243,6 +259,62 @@
         }else{
             txtOtro.val('');
             txtOtro.prop('readonly', true);
+        }
+    });
+
+    $('input[name="nu_respuesta2"]').on('click', function(e){
+        $('#id_nu_respuesta2').removeClass('alert-error');
+    });
+
+    $('input[name="nu_respuesta3"]').on('click', function(e){
+        $('#id_nu_respuesta3').removeClass('alert-error');
+    });
+
+    $('input[name="nu_respuesta4"]').on('click', function(e){
+        $('#id_nu_respuesta4').removeClass('alert-error');
+    });
+
+    $('input[name="nu_respuesta5"]').on('click', function(e){
+        $('#id_nu_respuesta5').removeClass('alert-error');
+    });
+
+    $('input[name="nu_respuesta6"]').on('click', function(e){
+        $('#id_nu_respuesta6').removeClass('alert-error');
+    });
+
+    $('input[name="nu_respuesta1"]').on('click', function(e){
+        $('#id_nu_respuesta1').removeClass('alert-error');
+    });
+
+    $('.texto').on('input blur', function(e){
+        var valor = $(this).val().toUpperCase();
+        if(valor !== '' ){
+            if(!blank.test(valor) && letter.test(valor)){
+                $(this).val(valor);
+                $('#l'+this.id).removeClass('alert-error');
+                $(this).tooltip('hide');
+            }else{
+                valor = $.trim(valor.replace(blank, ' ').replace(rletter, ''));
+                $(this).val(valor);
+            }
+        }else{
+            $('#l'+this.id).addClass('alert-error');
+        }
+    });
+
+    $('.numero').on('input blur', function(e){
+        var valor = $(this).val();
+        if(valor !== '' ){
+            if(!blank.test(valor) && number.test(valor)){
+                $(this).val(valor);
+                $('#l'+this.id).removeClass('alert-error');
+                $(this).tooltip('hide');
+            }else{
+                valor = $.trim(valor.replace(blank, '').replace(rnumber, ''));
+                $(this).val(valor);
+            }
+        }else{
+            $('#l'+this.id).addClass('alert-error');
         }
     });
 

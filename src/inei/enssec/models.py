@@ -61,8 +61,13 @@ def validate_edad(value):
 
 
 def validate_dni(value):
-    if len(value) <> 8:
+    if len(value) != 8:
         raise ValidationError(u'El número de DNI debe ser de 8 caracteres')
+
+
+def validate_id(value):
+    if len(value) != 4:
+        raise ValidationError(u'El número de Ficha debe ser de 4 digitos')
 
 
 class Continente(models.Model):
@@ -107,9 +112,9 @@ class Pais(models.Model):
 
 
 class Cuestionario(models.Model):
-    id = models.CharField(primary_key=True, max_length=4, db_column='co_ficha')
+    id = models.CharField(primary_key=True, max_length=4, db_column='co_ficha', validators=[validate_id])
     fecha = models.DateField(db_column='fe_encuesta', verbose_name='Fecha de la encuesta')
-    edad = models.IntegerField(db_column='nu_edad', validators=[validate_edad])
+    edad = models.IntegerField(db_column='nu_edad', validators=[validate_edad], max_length=2)
     ciudadResidencia = models.CharField(max_length=70, db_column='no_ciudadresidencia')
     sexo = models.SmallIntegerField(db_column='fl_sexo', choices=SEXO)
     nu_respuesta1 = models.CommaSeparatedIntegerField(max_length=20, db_column='nu_respuesta1')
