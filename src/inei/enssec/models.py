@@ -124,7 +124,7 @@ class Pais(models.Model):
 
 class Cuestionario(models.Model):
     ficha = models.CharField(max_length=4, db_column='co_ficha')
-    tomo = models.IntegerField(max_length=4, db_column='nu_tomo')
+    tomo = models.CharField(max_length=2, db_column='nu_tomo')
     fecha = models.DateField(db_column='fe_encuesta', verbose_name='Fecha de la encuesta')
     edad = models.IntegerField(db_column='nu_edad', validators=[validate_edad], max_length=2)
     ciudadResidencia = models.CharField(max_length=70, db_column='no_ciudadresidencia')
@@ -154,3 +154,15 @@ class Cuestionario(models.Model):
     class Meta:
         db_table = 'cuestionario'
         unique_together = ('ficha', 'tomo')
+
+
+class UsuarioConsulado(models.Model):
+    id = models.AutoField(primary_key=True, db_column='nu_usuarioconsulado')
+    usuario = models.ForeignKey(User, db_column='nu_usuario')
+    consulado = models.CharField(max_length=2, db_column='co_consulado')
+    continente = models.ForeignKey(Continente, db_column='co_continente')
+    tomo = models.IntegerField(db_column='nu_tomo')
+
+    class Meta:
+        db_table = 'usuarioconsulado'
+

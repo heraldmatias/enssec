@@ -276,7 +276,7 @@
         }).change(function(e){
             $('#id_ciudadResidencia').focus();
         });
-        $('#id_tomo').focus();
+        $('#id_ficha').focus();
         nextControlEnter();
     });
 
@@ -436,9 +436,9 @@
     });
 
     function nextControlEnter(){
+        $('#id_consulado_list_chosen').addClass('chosen-disabled');
         var textoSiguiente = Array();
-        textoSiguiente['id_tomo'] = [1, '#id_ficha'];
-        textoSiguiente['id_ficha'] = [2, '#id_consulado_list'];
+        textoSiguiente['id_ficha'] = [1, '#id_fecha_day'];
         textoSiguiente['id_fecha_day'] = [1, '#id_fecha_month'];
         textoSiguiente['id_fecha_month'] = [1, '#id_fecha_year'];
         textoSiguiente['id_fecha_year'] = [2, '#id_pais_list'];

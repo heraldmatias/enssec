@@ -9,7 +9,7 @@ from inei.auth.forms import LoginForm
 from django.contrib.auth import login, authenticate, logout
 import json
 from inei.enssec.forms import CuestionarioForm
-from inei.enssec.models import Cuestionario, Consulado, Continente, Pais
+from inei.enssec.models import Cuestionario, Consulado, Continente, Pais, UsuarioConsulado
 
 __author__ = 'holivares'
 
@@ -63,11 +63,21 @@ class CuestionarioView(FormView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        if UsuarioConsulado.objects.filter(usuario=self.request.user).exists():
+            pre_data = UsuarioConsulado.objects.filter(usuario=self.request.user)[0]
+            self.initial['tomo'] = pre_data.tomo
+            self.initial['consulado_list'] = '%s-%s-%s' % (pre_data.consulado, pre_data.continente.id, pre_data.continente.nombre)
         return super(CuestionarioView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         response = HttpResponse(json.dumps(self.save()), content_type="application/json")
         return response
+
+    # def get_context_data(self, **kwargs):
+    #     ctx = super(CuestionarioView, self).get_context_data(**kwargs)
+    #     if UsuarioConsulado.objects.filter(usuario=self.request.user).exists():
+    #         ctx['pre_data'] = UsuarioConsulado.objects.filter(usuario=self.request.user)[0]
+    #     return ctx
 
     def save(self):
         _consulado = self.request.POST.get('consulado_list')

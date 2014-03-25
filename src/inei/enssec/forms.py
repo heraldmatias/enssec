@@ -191,7 +191,7 @@ class CuestionarioForm(forms.ModelForm):
             'nu_respuesta5': forms.TextInput(attrs={'class': 'span1 numero'}),
             'nu_respuesta6': forms.TextInput(attrs={'class': 'span1 numero'}),
             'no_respuesta6': forms.TextInput(attrs={'class': 'span12 texto'}),
-            'tomo': forms.TextInput(attrs={'class': 'span3   numero'}),
+            'tomo': forms.TextInput(attrs={'class': 'span3   numero', 'readonly': 'readonly'}),
             'fecha': CustomSelectDateWidget(years=(13, 14)),
             'edad': forms.TextInput(attrs={'class': 'span12 numero', 'maxlength': 2}),
             'dni': forms.TextInput(attrs={'class': 'span12 numero'}),
