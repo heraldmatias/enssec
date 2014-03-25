@@ -66,6 +66,14 @@ def validate_dni(value):
         raise ValidationError(u'El número de DNI debe ser de 8 caracteres')
 
 
+def validate_unique(value):
+    cuestionario = Cuestionario.objects.filter(dni=value)
+    if cuestionario.exists():
+        cuestionario = cuestionario.values('tomo', 'ficha')[0]
+        msg = u'Ya existe el DNI en el siguiente tomo %s y ficha %s' % (cuestionario['tomo'], cuestionario['ficha'])
+        raise ValidationError(msg)
+
+
 def validate_bit(value):
     if value not in ('0', '1'):
         raise ValidationError(u'Debe ingresar solo 0 y 1')
@@ -143,7 +151,7 @@ class Cuestionario(models.Model):
     nu_respuesta6 = models.CharField(db_column='nu_respuesta6', max_length=1, validators=[validate_16])
     no_respuesta6 = models.CharField(max_length=70, blank=True, db_column='no_respuesta6')
     encuestado = models.CharField(max_length=100, db_column='no_nombreencuestado')
-    dni = models.CharField(max_length=8, db_column='co_dni', validators=[validate_dni], unique=True)
+    dni = models.CharField(max_length=8, db_column='co_dni', validators=[validate_dni, validate_unique])
     observacion = models.TextField(blank=True, db_column='tx_observacion')
     pais = models.ForeignKey('Pais', db_column='co_pais', verbose_name=u'País de Residencia')
     consulado = models.ForeignKey(Consulado, db_column='co_consulado', verbose_name='Nombre del consulado')

@@ -91,7 +91,7 @@ class CuestionarioView(FormView):
                 pais = Pais.objects.get(id=_pais[0])
                 continentePais = pais.continente
                 continenteConsulado = consulado.continente
-            except Consulado.DoesNotExist, Pais.DoesNotExist:
+            except Exception:
                 consulado = Consulado()
                 continentePais = Continente()
                 continenteConsulado = Continente()

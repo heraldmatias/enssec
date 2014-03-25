@@ -415,6 +415,10 @@
                         alert(v[0]);
                         $('#lid_tomo').addClass('alert-error');
                         $('#lid_ficha').addClass('alert-error');
+                    }else if (k === 'dni'){
+                        if(v[0].indexOf('existe') !== -1)
+                            alert(v[0]);
+                        $('#lid_'+k).addClass('alert-error');
                     }else{
                         $('#lid_'+k).addClass('alert-error');
                     }
@@ -436,7 +440,7 @@
     });
 
     function nextControlEnter(){
-        $('#id_consulado_list_chosen').addClass('chosen-disabled');
+        //$('#id_consulado_list_chosen').addClass('chosen-disabled');
         var textoSiguiente = Array();
         textoSiguiente['id_ficha'] = [1, '#id_fecha_day'];
         textoSiguiente['id_fecha_day'] = [1, '#id_fecha_month'];
