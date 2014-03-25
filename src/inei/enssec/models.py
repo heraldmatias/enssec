@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy.oldnumeric.ma import _maximum_operation
 from django.core.exceptions import ValidationError
 
 __author__ = 'holivares'
@@ -50,8 +51,8 @@ OPTIONS6 = (
 )
 
 SEXO = (
-    (1, 'Hombre'),
-    (2, 'Mujer')
+    ('1', '1 - Hombre'),
+    ('2', '2 - Mujer')
 )
 
 
@@ -65,9 +66,19 @@ def validate_dni(value):
         raise ValidationError(u'El número de DNI debe ser de 8 caracteres')
 
 
-def validate_id(value):
-    if len(value) != 4:
-        raise ValidationError(u'El número de Ficha debe ser de 4 digitos')
+def validate_bit(value):
+    if value not in ('0', '1'):
+        raise ValidationError(u'Debe ingresar solo 0 y 1')
+
+
+def validate_15(value):
+    if value not in ('1', '2', '3', '4', '5'):
+        raise ValidationError(u'Debe ingresar solo 1 a 5')
+
+
+def validate_16(value):
+    if value not in ('1', '2', '3', '4', '5', '6'):
+        raise ValidationError(u'Debe ingresar solo 1 a 6')
 
 
 class Continente(models.Model):
@@ -112,21 +123,27 @@ class Pais(models.Model):
 
 
 class Cuestionario(models.Model):
-    id = models.CharField(primary_key=True, max_length=4, db_column='co_ficha', validators=[validate_id])
+    ficha = models.CharField(max_length=4, db_column='co_ficha')
+    tomo = models.IntegerField(max_length=4, db_column='nu_tomo')
     fecha = models.DateField(db_column='fe_encuesta', verbose_name='Fecha de la encuesta')
     edad = models.IntegerField(db_column='nu_edad', validators=[validate_edad], max_length=2)
     ciudadResidencia = models.CharField(max_length=70, db_column='no_ciudadresidencia')
-    sexo = models.SmallIntegerField(db_column='fl_sexo', choices=SEXO)
-    nu_respuesta1 = models.CommaSeparatedIntegerField(max_length=20, db_column='nu_respuesta1')
+    sexo = models.CharField(db_column='fl_sexo', max_length=1, choices=SEXO)
+    nu_respuesta1_1 = models.CharField(max_length=1, db_column='nu_respuesta1_1', validators=[validate_bit])
+    nu_respuesta1_2 = models.CharField(max_length=1, db_column='nu_respuesta1_2', validators=[validate_bit])
+    nu_respuesta1_3 = models.CharField(max_length=1, db_column='nu_respuesta1_3', validators=[validate_bit])
+    nu_respuesta1_4 = models.CharField(max_length=1, db_column='nu_respuesta1_4', validators=[validate_bit])
+    nu_respuesta1_5 = models.CharField(max_length=1, db_column='nu_respuesta1_5', validators=[validate_bit])
+    nu_respuesta1_6 = models.CharField(max_length=1, db_column='nu_respuesta1_6', validators=[validate_bit])
     no_respuesta1_6 = models.CharField(max_length=70, blank=True, db_column='no_respuesta1_6')
-    nu_respuesta2 = models.SmallIntegerField(db_column='nu_respuesta2', choices=OPTIONS2)
-    nu_respuesta3 = models.SmallIntegerField(db_column='nu_respuesta3', choices=OPTIONS3)
-    nu_respuesta4 = models.SmallIntegerField(db_column='nu_respuesta4', choices=OPTIONS2)
-    nu_respuesta5 = models.SmallIntegerField(db_column='nu_respuesta5', choices=OPTIONS5)
-    nu_respuesta6 = models.SmallIntegerField(db_column='nu_respuesta6', choices=OPTIONS6)
+    nu_respuesta2 = models.CharField(db_column='nu_respuesta2', max_length=1, validators=[validate_15])
+    nu_respuesta3 = models.CharField(db_column='nu_respuesta3', max_length=1, validators=[validate_15])
+    nu_respuesta4 = models.CharField(db_column='nu_respuesta4', max_length=1, validators=[validate_15])
+    nu_respuesta5 = models.CharField(db_column='nu_respuesta5', max_length=1, validators=[validate_15])
+    nu_respuesta6 = models.CharField(db_column='nu_respuesta6', max_length=1, validators=[validate_16])
     no_respuesta6 = models.CharField(max_length=70, blank=True, db_column='no_respuesta6')
     encuestado = models.CharField(max_length=100, db_column='no_nombreencuestado')
-    dni = models.CharField(max_length=8, db_column='co_dni', validators=[validate_dni])
+    dni = models.CharField(max_length=8, db_column='co_dni', validators=[validate_dni], unique=True)
     observacion = models.TextField(blank=True, db_column='tx_observacion')
     pais = models.ForeignKey('Pais', db_column='co_pais', verbose_name=u'País de Residencia')
     consulado = models.ForeignKey(Consulado, db_column='co_consulado', verbose_name='Nombre del consulado')
@@ -136,3 +153,4 @@ class Cuestionario(models.Model):
 
     class Meta:
         db_table = 'cuestionario'
+        unique_together = ('ficha', 'tomo')

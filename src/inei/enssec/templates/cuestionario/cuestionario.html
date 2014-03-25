@@ -81,11 +81,19 @@
                                     <div class="tab-content" id="myTabContent">
                                         <div id="step1" class="tab-pane fade active in">
                                             <div class="row-fluid">
+                                                <div style="float: left">
+                                                    <div class="control-group">
+                                                        <label class="control-label" id="lid_tomo" for="id_tomo">N° Tomo:</label>
+                                                        <div class="controls">
+                                                            {{ form.tomo }}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div style="float: right">
                                                     <div class="control-group">
-                                                        <label class="control-label" id="lid_id" for="id_id">Ficha N°:</label>
+                                                        <label class="control-label" id="lid_ficha" for="id_ficha">Ficha N°:</label>
                                                         <div class="controls">
-                                                            {{ form.id }}
+                                                            {{ form.ficha }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -124,37 +132,80 @@
                                             <br>
                                             <div class="row-fluid borde_fila">
                                                 <div class="span6 celda">
-                                                    <span class="pregunta" id="id_nu_respuesta1">1.- ¿CUÁL ES EL MOTIVO POR EL QUE USTED ACUDIÓ, EL DÍA DE HOY AL CONSULADO?</span>
+                                                    <span class="pregunta" id="lid_nu_respuesta1">1.- ¿CUÁL ES EL MOTIVO POR EL QUE USTED ACUDIÓ, EL DÍA DE HOY AL CONSULADO?</span>
                                                     <h6>(Cicule una o más alternativas)</h6>
-                                                    {{ form.nu_respuesta1 }}
+                                                    <ul id="id_nu_respuesta1">
+                                                        <li><label for="id_nu_respuesta1_1">1.- Información/asesoría&nbsp;&nbsp;&nbsp;{{ form.nu_respuesta1_1 }}</label></li>
+                                                        <li><label for="id_nu_respuesta1_2">2.- DNI, registro de nacimiento o similar&nbsp;&nbsp;&nbsp;{{ form.nu_respuesta1_2 }}</label></li>
+                                                        <li><label for="id_nu_respuesta1_3">3.- Pasaporte/salvoconducto&nbsp;&nbsp;&nbsp;{{ form.nu_respuesta1_3 }}</label></li>
+                                                        <li><label for="id_nu_respuesta1_4">4.- Escritura pública, legizlaciones o similar&nbsp;&nbsp;&nbsp;{{ form.nu_respuesta1_4 }}</label></li>
+                                                        <li><label for="id_nu_respuesta1_5">5.- Asistencia y apoyo humanitario&nbsp;&nbsp;&nbsp;{{ form.nu_respuesta1_5 }}</label></li>
+                                                        <li><label for="id_nu_respuesta1_6">6.- Otro &nbsp;&nbsp;&nbsp;{{ form.nu_respuesta1_6 }}</label></li>
+                                                        </ul>
                                                     <div style="text-align: center;">
                                                         {{ form.no_respuesta1_6 }}<br>
                                                         <span>(Especifique)</span>
                                                     </div>
                                                 </div>
                                                 <div class="span6 celda">
-                                                    <span class="pregunta" id="id_nu_respuesta4">4.- ¿COMO CONSIDERA LAS CONDICIONES DEL LOCAL CONSULAR (INFRAESTRUCTURA, EQUIPAMIENTO Y MOBILIARIO)?</span>
+                                                    <span class="pregunta" id="lid_nu_respuesta4">4.- ¿COMO CONSIDERA LAS CONDICIONES DEL LOCAL CONSULAR (INFRAESTRUCTURA, EQUIPAMIENTO Y MOBILIARIO)?</span>
                                                     {{ form.nu_respuesta4 }}
+                                                    <ul id="id_nu_respuesta4">
+                                                        <li><label for="id_nu_respuesta4">1.- Muy Bueno</label></li>
+                                                        <li><label for="id_nu_respuesta4">2.- Bueno</label></li>
+                                                        <li><label for="id_nu_respuesta4">3.- Regular</label></li>
+                                                        <li><label for="id_nu_respuesta4">4.- Malo</label></li>
+                                                        <li><label for="id_nu_respuesta4">5.- Muy Malo</label></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                             <div class="row-fluid borde_fila">
                                                 <div class="span6 celda">
-                                                    <span class="pregunta" id="id_nu_respuesta2">2.- ¿CÓMO FUE EL TRATO DEL PERSONAL QUE LO ATENDIÓ?</span>
+                                                    <span class="pregunta" id="lid_nu_respuesta2">2.- ¿CÓMO FUE EL TRATO DEL PERSONAL QUE LO ATENDIÓ?</span>
                                                     {{ form.nu_respuesta2 }}
+                                                    <ul id="id_nu_respuesta2">
+                                                        <li><label for="id_nu_respuesta2">1.- Muy Bueno</label></li>
+                                                        <li><label for="id_nu_respuesta2">2.- Bueno</label></li>
+                                                        <li><label for="id_nu_respuesta2">3.- Regular</label></li>
+                                                        <li><label for="id_nu_respuesta2">4.- Malo</label></li>
+                                                        <li><label for="id_nu_respuesta2">5.- Muy Malo</label></li>
+                                                    </ul>
                                                 </div>
                                                 <div class="span6 celda">
-                                                    <span class="pregunta" id="id_nu_respuesta5">5.- ¿SE SIENTE SATISFECHO CON EL SERVICIO QUE BRINDA LA OFICINA CONSULAR?</span>
+                                                    <span class="pregunta" id="lid_nu_respuesta5">5.- ¿SE SIENTE SATISFECHO CON EL SERVICIO QUE BRINDA LA OFICINA CONSULAR?</span>
                                                     {{ form.nu_respuesta5 }}
+                                                    <ul id="id_nu_respuesta5">
+                                                        <li><label for="id_nu_respuesta5">1.- Muy satisfecho</label></li>
+                                                        <li><label for="id_nu_respuesta5">2.- Satisfecho</label></li>
+                                                        <li><label for="id_nu_respuesta5">3.- Ni satisfecho ni insatisfecho</label></li>
+                                                        <li><label for="id_nu_respuesta5">4.- Insatisfecho</label></li>
+                                                        <li><label for="id_nu_respuesta5">5.- Muy insatisfecho</label></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                             <div id="fila-ultima" class="row-fluid borde_fila">
                                                 <div id="celda-ultima" class="span6 celda">
-                                                    <span class="pregunta" id="id_nu_respuesta3">3.- ¿CÓMO CONSIDERA EL TIEMPO DE ESPERA PARA SER ATENDIDO?</span>
+                                                    <span class="pregunta" id="lid_nu_respuesta3">3.- ¿CÓMO CONSIDERA EL TIEMPO DE ESPERA PARA SER ATENDIDO?</span>
                                                     {{ form.nu_respuesta3 }}
+                                                    <ul id="id_nu_respuesta3">
+                                                        <li><label for="id_nu_respuesta3">1.- Muy rápido</label></li>
+                                                        <li><label for="id_nu_respuesta3">2.- Rápido</label></li>
+                                                        <li><label for="id_nu_respuesta3">3.- Moderado</label></li>
+                                                        <li><label for="id_nu_respuesta3">4.- Demora un poco</label></li>
+                                                        <li><label for="id_nu_respuesta3">5.- Demora en exceso</label></li>
+                                                    </ul>
                                                 </div>
                                                 <div class="span6 celda">
-                                                    <span class="pregunta" id="id_nu_respuesta6">6.- ¿CÓMO CREE USTED QUE SE PUEDE MEJORAR EL SERVICIO CONSULAR?</span>
+                                                    <span class="pregunta" id="lid_nu_respuesta6">6.- ¿CÓMO CREE USTED QUE SE PUEDE MEJORAR EL SERVICIO CONSULAR?</span>
                                                     {{ form.nu_respuesta6 }}
+                                                    <ul id="id_nu_respuesta6">
+                                                        <li><label for="id_nu_respuesta6">1.- Contratando más personal</label></li>
+                                                        <li><label for="id_nu_respuesta6">2.- Mejorando la comunicación (teléfono/internet)</label></li>
+                                                        <li><label for="id_nu_respuesta6">3.- Mejorando la infraestructura y mobiliario</label></li>
+                                                        <li><label for="id_nu_respuesta6">4.- Capacitando al personal</label></li>
+                                                        <li><label for="id_nu_respuesta6">5.- Mayores horarios de atención</label></li>
+                                                        <li><label for="id_nu_respuesta6">6.- Otro</label></li>
+                                                    </ul>
                                                     <div style="text-align: center;">
                                                         {{ form.no_respuesta6 }}<br>
                                                         <span>(Especifique)</span>
@@ -183,10 +234,8 @@
                                             </table>
                                         </div>
                                         <div class="next-prev-btn-container pull-right" style="margin-right: 10px;">
-                                            <a data-original-title="" href="javascript: save_cuestionario();"
-                                               class="button next" >
-                                                Grabar
-                                            </a>
+                                            <a data-original-title="" href="javascript: save_cuestionario();" id="grabar"
+                                               class="button next" >Grabar</a>
                                             <div class="clearfix">
                                             </div>
                                         </div>
@@ -218,12 +267,17 @@
         $("#id_consulado_list").chosen({
             no_results_text: "No se encontro el proyecto!",
             allow_single_deselect: true
+        }).change(function(e){
+            $('#id_fecha_day').focus();
         });
         $("#id_pais_list").chosen({
             no_results_text: "No se encontro el proyecto!",
             allow_single_deselect: true
+        }).change(function(e){
+            $('#id_ciudadResidencia').focus();
         });
-        $('#id_id').focus();
+        $('#id_tomo').focus();
+        nextControlEnter();
     });
 
     $('select').on('change', function(e){
@@ -252,9 +306,9 @@
            }
     });
 
-    $('input[name="nu_respuesta6"]').on('click', function(e){
-        var txtOtro = $('#id_no_respuesta6');
-        if(e.target.value==='6'){
+    $('input[name="nu_respuesta1_6"]').on('change', function(e){
+        var txtOtro = $('#id_no_respuesta1_6');
+        if($(this).val()==='1'){
             txtOtro.prop('readonly', false);
         }else{
             txtOtro.val('');
@@ -262,28 +316,39 @@
         }
     });
 
-    $('input[name="nu_respuesta2"]').on('click', function(e){
-        $('#id_nu_respuesta2').removeClass('alert-error');
+    $('input[name="nu_respuesta6"]').on('change', function(e){
+        var txtOtro = $('#id_no_respuesta6');
+        $('#lid_nu_respuesta6').removeClass('alert-error');
+        if($(this).val()==='6'){
+            txtOtro.prop('readonly', false);
+        }else{
+            txtOtro.val('');
+            txtOtro.prop('readonly', true);
+        }
     });
 
-    $('input[name="nu_respuesta3"]').on('click', function(e){
-        $('#id_nu_respuesta3').removeClass('alert-error');
+    $('input[name="tomo"]').on('change', function(e){
+        $('#lid_tomo').removeClass('alert-error');
     });
 
-    $('input[name="nu_respuesta4"]').on('click', function(e){
-        $('#id_nu_respuesta4').removeClass('alert-error');
+    $('input[name="ficha"]').on('change', function(e){
+        $('#lid_ficha').removeClass('alert-error');
     });
 
-    $('input[name="nu_respuesta5"]').on('click', function(e){
-        $('#id_nu_respuesta5').removeClass('alert-error');
+    $('input[name="nu_respuesta2"]').on('change', function(e){
+        $('#lid_nu_respuesta2').removeClass('alert-error');
     });
 
-    $('input[name="nu_respuesta6"]').on('click', function(e){
-        $('#id_nu_respuesta6').removeClass('alert-error');
+    $('input[name="nu_respuesta3"]').on('change', function(e){
+        $('#lid_nu_respuesta3').removeClass('alert-error');
     });
 
-    $('input[name="nu_respuesta1"]').on('click', function(e){
-        $('#id_nu_respuesta1').removeClass('alert-error');
+    $('input[name="nu_respuesta4"]').on('change', function(e){
+        $('#lid_nu_respuesta4').removeClass('alert-error');
+    });
+
+    $('input[name="nu_respuesta5"]').on('change', function(e){
+        $('#lid_nu_respuesta5').removeClass('alert-error');
     });
 
     $('.texto').on('input blur', function(e){
@@ -340,12 +405,16 @@
                 $('.alert-error').removeClass('alert-error');
                 var msg='Corrija los errores marcados en rojo porfavor!';
                 $.each(data['data'],function(k,v){
-                    if($.inArray(k, ['nu_respuesta1','nu_respuesta2','nu_respuesta3','nu_respuesta4','nu_respuesta5','nu_respuesta6']) !== -1){
-                        $('#id_'+k).addClass('alert-error');
+                    if($.inArray(k, ['nu_respuesta1_1','nu_respuesta1_2','nu_respuesta1_3','nu_respuesta1_4','nu_respuesta1_5','nu_respuesta1_6']) !== -1){
+                        $('#id_'+k).parent().addClass('alert-error');
                     }else if (k === 'no_respuesta1_6'){
                         $('#id_nu_respuesta1').addClass('alert-error');
                     }else if (k === 'no_respuesta6'){
                         $('#id_nu_respuesta6').addClass('alert-error');
+                    }else if (k === '__all__'){
+                        alert(v[0]);
+                        $('#lid_tomo').addClass('alert-error');
+                        $('#lid_ficha').addClass('alert-error');
                     }else{
                         $('#lid_'+k).addClass('alert-error');
                     }
@@ -358,6 +427,59 @@
         });
     }
 
+    $('.bit').on('keypress', function(e){
+        if($.inArray($(this).val(), ['0', '1']) === -1){
+            $(this).parent().addClass('alert-error');
+        }else{
+            $(this).parent().removeClass('alert-error');
+        }
+    });
+
+    function nextControlEnter(){
+        var textoSiguiente = Array();
+        textoSiguiente['id_tomo'] = [1, '#id_ficha'];
+        textoSiguiente['id_ficha'] = [2, '#id_consulado_list'];
+        textoSiguiente['id_fecha_day'] = [1, '#id_fecha_month'];
+        textoSiguiente['id_fecha_month'] = [1, '#id_fecha_year'];
+        textoSiguiente['id_fecha_year'] = [2, '#id_pais_list'];
+        textoSiguiente['id_ciudadResidencia'] = [1, '#id_edad'];
+        textoSiguiente['id_edad'] = [1, '#id_sexo'];
+        textoSiguiente['id_sexo'] = [1, '#id_nu_respuesta1_1'];
+        textoSiguiente['id_nu_respuesta1_1'] = [1, '#id_nu_respuesta1_2'];
+        textoSiguiente['id_nu_respuesta1_2'] = [1, '#id_nu_respuesta1_3'];
+        textoSiguiente['id_nu_respuesta1_3'] = [1, '#id_nu_respuesta1_4'];
+        textoSiguiente['id_nu_respuesta1_4'] = [1, '#id_nu_respuesta1_5'];
+        textoSiguiente['id_nu_respuesta1_5'] = [1, '#id_nu_respuesta1_6'];
+        textoSiguiente['id_nu_respuesta1_6'] = [1, '#id_no_respuesta1_6'];
+        textoSiguiente['id_no_respuesta1_6'] = [1, '#id_nu_respuesta2'];
+        textoSiguiente['id_nu_respuesta2'] = [1, '#id_nu_respuesta3'];
+        textoSiguiente['id_nu_respuesta3'] = [1, '#id_nu_respuesta4'];
+        textoSiguiente['id_nu_respuesta4'] = [1, '#id_nu_respuesta5'];
+        textoSiguiente['id_nu_respuesta5'] = [1, '#id_nu_respuesta6'];
+        textoSiguiente['id_nu_respuesta6'] = [1, '#id_no_respuesta6'];
+        textoSiguiente['id_no_respuesta6'] = [1, '#id_encuestado'];
+        textoSiguiente['id_encuestado'] = [1, '#id_dni'];
+        textoSiguiente['id_dni'] = [1, '#id_observacion'];
+        textoSiguiente['id_observacion'] = [1, '#id_dni'];
+        textoSiguiente['id_observacion'] = [1, '#grabar'];
+        var cajas = $('input[type="text"], select, textarea');
+        var campoSiguiente = null;
+        $.each(cajas, function(i, c){
+            if(textoSiguiente[c.id] !== undefined){
+            $(c).on('keypress', function(e){
+                if(e.which === 13){
+                    campoSiguiente = $(textoSiguiente[c.id][1]);
+                    if(textoSiguiente[c.id][0]===2){
+                        campoSiguiente.trigger('chosen:activate');
+                    }else if(textoSiguiente[c.id][0]===3){
+                    }else{
+                        campoSiguiente.focus();
+                    }
+                }
+            });
+            }
+        });
+    }
 
     </script>
 {% endblock %}
