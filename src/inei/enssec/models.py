@@ -251,6 +251,7 @@ class TotalDigitacion(models.Model):
 class ResumenDigitacion(models.Model):
     fecha = models.DateField(db_column='fecha', verbose_name='Fecha de la encuesta')
     digitador = models.CharField(max_length=60, db_column='digitador_nombre')
+    codigo_digitador = models.IntegerField(db_column='codigo_digitador')
     usuario = models.CharField(max_length=30, db_column='digitador_usuario')
     ficha = models.CharField(max_length=4, db_column='ficha')
     tomo = models.CharField(max_length=2, db_column='tomo')
