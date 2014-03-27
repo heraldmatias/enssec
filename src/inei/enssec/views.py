@@ -87,7 +87,7 @@ class CuestionarioView(FormView):
         if _pais:
             _pais.split('-')
             cuestionario.pais = _pais[0]
-            cuestionario.continentePais =  continentePais=_pais[1]
+            cuestionario.continentePais = _pais[1]
         form = CuestionarioForm(self.request.POST, instance=cuestionario)
 
         if form.is_valid():
