@@ -218,11 +218,16 @@ class TotalDigitacionListView(ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect('/cuestionario/')
         return super(TotalDigitacionListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
         qs = super(TotalDigitacionListView, self).get_queryset()
         filtro = {}
+        if 'date_range' in self.request.GET:
+            date_range = self.request.GET['date_range'].split(' | ')
+            filtro['fecha__range'] = date_range
         qs = qs.filter(**filtro)
         return qs
 
@@ -240,11 +245,18 @@ class ResumenDigitacionListView(ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect('/cuestionario/')
         return super(ResumenDigitacionListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
         qs = super(ResumenDigitacionListView, self).get_queryset()
         filtro = {}
+        if 'date_range' in self.request.GET:
+            date_range = self.request.GET['date_range'].split(' | ')
+            filtro['fecha__range'] = date_range
+        if 'digitador' in self.request.GET:
+            filtro['digitador'] = self.request.GET['digitador']
         qs = qs.filter(**filtro)
         return qs
 

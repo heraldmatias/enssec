@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
+{% load querytags %}
 {% load url from future %}
 {% block css %}
     <style>
@@ -36,6 +37,9 @@
                                                     <div class="widget">
                                                         <div class="widget-header">
                                                             <div class="title">Opciones de busqueda</div>
+                                                            <span class="tools">
+                                                                <a data-original-title="" class="fs1" aria-hidden="true" data-icon="" href="/cuestionario/admin/" title="Volver"> </a>
+                                                            </span>
                                                         </div>
                                                         <div class="widget-body">
                                                             <div class="control-group">
@@ -83,6 +87,22 @@
                                                                 {% endfor %}
                                                                 </tbody>
                                                             </table>
+                                                            <div class="pagination pagination-right">
+                                                                <div style="float: left">
+                                                                    Mostrando {{ page_obj|length }} registros de {{ paginator.count }}
+                                                                </div>
+                                                              <ul>
+                                                                <li><a href="{% querystring "page"=1 %}" title="Primero">&lt;&lt;</a></li>
+                                                                {% if page_obj.has_previous %}
+                                                                <li><a href="{% querystring "page"=page_obj.previous_page_number %}" title="Anterior">&lt;</a></li>
+                                                                {% endif %}
+                                                                <li class="active"><a href="#">{{ page_obj.number }}</a></li>
+                                                                {% if page_obj.has_next %}
+                                                                <li><a href="{% querystring "page"=page_obj.next_page_number %}" title="Siguiente">&gt;</a></li>
+                                                                {% endif %}
+                                                                <li><a href="{% querystring "page"=paginator.num_pages %}" title="Ultimo">&gt;&gt;</a></li>
+                                                              </ul>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -105,6 +125,8 @@
     <script type="text/javascript">
       $('.date_picker').daterangepicker({
         opens: 'right',
+        format: 'yyyy-MM-dd',
+        separator: ' | ',
         locale: {
             applyLabel: 'Aplicar',
             clearLabel:"Limpiar",
