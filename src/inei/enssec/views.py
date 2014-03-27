@@ -256,7 +256,7 @@ class ResumenDigitacionListView(ListView):
             date_range = self.request.GET['date_range'].split(' | ')
             filtro['fecha__range'] = date_range
         if 'digitador' in self.request.GET:
-            filtro['digitador'] = self.request.GET['digitador']
+            filtro['codigo_digitador'] = self.request.GET['digitador']
         qs = qs.filter(**filtro)
         return qs
 
