@@ -80,12 +80,12 @@ def validate_bit(value):
 
 
 def validate_15(value):
-    if value not in ('1', '2', '3', '4', '5'):
+    if value not in ('1', '2', '3', '4', '5', '9'):
         raise ValidationError(u'Debe ingresar solo 1 a 5')
 
 
 def validate_16(value):
-    if value not in ('1', '2', '3', '4', '5', '6'):
+    if value not in ('1', '2', '3', '4', '5', '6', '9'):
         raise ValidationError(u'Debe ingresar solo 1 a 6')
 
 
@@ -158,6 +158,7 @@ class Cuestionario(models.Model):
     continentePais = models.ForeignKey(Continente, db_column='co_continentepais', related_name='paisContinente')
     continenteConsulado = models.ForeignKey(Continente, db_column='co_continenteconsulado', related_name='consuladoContinente')
     usuario = models.ForeignKey(User, db_column='nu_usuario')
+    fecha_registro = models.DateField(db_column='fe_registro', verbose_name='Fecha de registro', auto_now_add=True)
 
     class Meta:
         db_table = 'cuestionario'
@@ -174,3 +175,25 @@ class UsuarioConsulado(models.Model):
     class Meta:
         db_table = 'usuarioconsulado'
 
+
+class TotalDigitacion(models.Model):
+    fecha = models.DateField(db_column='fecha', verbose_name='Fecha de la encuesta')
+    digitador = models.CharField(max_length=60, db_column='digitador_nombre')
+    usuario = models.CharField(max_length=30, db_column='digitador_usuario')
+    fichas = models.IntegerField(db_column='fichas')
+
+    class Meta:
+        managed = False
+        db_table = 'lv_total_digitacion'
+
+
+class ResumenDigitacion(models.Model):
+    fecha = models.DateField(db_column='fecha', verbose_name='Fecha de la encuesta')
+    digitador = models.CharField(max_length=60, db_column='digitador_nombre')
+    usuario = models.CharField(max_length=30, db_column='digitador_usuario')
+    ficha = models.CharField(max_length=4, db_column='ficha')
+    tomo = models.CharField(max_length=2, db_column='tomo')
+
+    class Meta:
+        managed = False
+        db_table = 'lv_resumen_digitacion'

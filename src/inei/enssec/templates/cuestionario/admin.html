@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load url from future %}
+{% block css %}
+    <style>
+        #tbl_data thead tr th{
+            text-align: center;
+        }
+        #tbl_data tbody tr td{
+            text-align: center;
+        }
+
+    </style>
+{% endblock %}
+{% block contenido %}
+    <div style="position: absolute; right: 20px; top:90px;">
+        <a href="{% url 'logout' %}"><h4>Cerrar sesion</h4></a>
+    </div>
+    <!-- bootstrap css -->
+    <div class="container-fluid">
+        <div class="dashboard-wrapper">
+            <div class="left-sidebar">
+                <div class="row-fluid">
+                    <div class="span8 offset2">
+                        <div class="widget">
+                            <div class="widget-header">
+                                <div class="title">Administración</div>
+                            </div>
+                            <div class="widget-body">
+                                <form class="form-horizontal no-margin" id="id_form" name="form">
+                                    {% csrf_token %}
+                                    <div class="tab-content" id="myTabContent">
+                                        <div id="step1" class="tab-pane fade active in">
+                                            <div class="row-fluid">
+                                                <div class="span12">
+                                                    <a href="{% url 'cuestionario-total' %}">Reporte total de digitación</a> <br>
+                                                    <a href="{% url 'cuestionario-resumen' %}">Reporte resumen de digitación</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+{% endblock %}

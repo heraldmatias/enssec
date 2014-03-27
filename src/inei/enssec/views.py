@@ -2,14 +2,16 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.views.generic.base import RedirectView
+from django.views.generic.list import ListView
 from inei.auth.forms import LoginForm
 from django.contrib.auth import login, authenticate, logout
 import json
-from inei.enssec.forms import CuestionarioForm
-from inei.enssec.models import Cuestionario, Consulado, Continente, Pais, UsuarioConsulado
+from inei.enssec.forms import CuestionarioForm, TotalDigitacionForm, ResumenDigitacionForm
+from inei.enssec.models import Cuestionario, Consulado, Continente, Pais, UsuarioConsulado, \
+    TotalDigitacion, ResumenDigitacion
 
 __author__ = 'holivares'
 
@@ -113,3 +115,55 @@ class CuestionarioView(FormView):
                 'data': form.errors
             }
         return response
+
+
+class AdminView(TemplateView):
+    template_name = 'cuestionario/admin.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AdminView, self).dispatch(*args, **kwargs)
+
+
+class TotalDigitacionListView(ListView):
+    model = TotalDigitacion
+    template_name = 'cuestionario/total-digitacion.html'
+    paginate_by = 10
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(TotalDigitacionListView, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        qs = super(TotalDigitacionListView, self).get_queryset()
+        filtro = {}
+        qs = qs.filter(**filtro)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        ctx = super(TotalDigitacionListView, self).get_context_data()
+        form = TotalDigitacionForm(self.request.GET)
+        ctx['form'] = form
+        return ctx
+
+
+class ResumenDigitacionListView(ListView):
+    model = ResumenDigitacion
+    template_name = 'cuestionario/resumen-digitacion.html'
+    paginate_by = 10
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ResumenDigitacionListView, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        qs = super(ResumenDigitacionListView, self).get_queryset()
+        filtro = {}
+        qs = qs.filter(**filtro)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ResumenDigitacionListView, self).get_context_data()
+        form = ResumenDigitacionForm(self.request.GET)
+        ctx['form'] = form
+        return ctx

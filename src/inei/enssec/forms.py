@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms.fields import MultipleChoiceField
+from django.contrib.auth.models import User
 
 __author__ = 'holivares'
 import datetime
@@ -202,3 +203,12 @@ class CuestionarioForm(forms.ModelForm):
             'ficha': forms.TextInput(attrs={'class': 'span6 numero'})
         }
         exclude = ('usuario', 'continentePais', 'continenteConsulado', 'consulado', 'pais', )
+
+
+class TotalDigitacionForm(forms.Form):
+    date_range = forms.CharField(max_length=70, required=False, widget=forms.TextInput(attrs={'class': 'date_picker span10'}))
+
+
+class ResumenDigitacionForm(TotalDigitacionForm):
+    digitador = forms.ModelChoiceField(queryset=User.objects.filter(is_staff=False, is_superuser=False, is_active=True),
+                                       empty_label='---Seleccione---', widget=forms.Select(attrs={'class': 'span7'}))
