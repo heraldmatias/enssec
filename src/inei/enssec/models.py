@@ -66,21 +66,6 @@ def validate_dni(value):
         raise ValidationError(u'El número de DNI debe ser de 8 caracteres')
 
 
-def validate_unique(value):
-    cuestionario = Cuestionario.objects.filter(dni=value)
-    if cuestionario.exists():
-        cuestionario = cuestionario.values('tomo', 'ficha')[0]
-        msg = u'Ya existe el DNI en el siguiente tomo %s y ficha %s' % (cuestionario['tomo'], cuestionario['ficha'])
-        raise ValidationError(msg)
-
-def validate_unique_ficha(value):
-    cuestionario = Cuestionario.objects.filter(dni=value)
-    if cuestionario.exists():
-        cuestionario = cuestionario.values('tomo', 'ficha')[0]
-        msg = u'Ya existe el DNI en el siguiente tomo %s y ficha %s' % (cuestionario['tomo'], cuestionario['ficha'])
-        raise ValidationError(msg)
-
-
 def validate_bit(value):
     if value not in ('0', '1'):
         raise ValidationError(u'Debe ingresar solo 0 y 1')
@@ -158,18 +143,87 @@ class Cuestionario(models.Model):
     nu_respuesta6 = models.CharField(db_column='nu_respuesta6', max_length=1, validators=[validate_16])
     no_respuesta6 = models.CharField(max_length=70, blank=True, db_column='no_respuesta6')
     encuestado = models.CharField(max_length=100, db_column='no_nombreencuestado')
-    dni = models.CharField(max_length=8, db_column='co_dni', validators=[validate_dni, validate_unique], null=True, blank=True)
+    dni = models.CharField(max_length=8, db_column='co_dni', validators=[validate_dni], unique=True, null=True, blank=True)
     observacion = models.TextField(blank=True, db_column='tx_observacion')
-    pais = models.ForeignKey('Pais', db_column='co_pais', verbose_name=u'País de Residencia')
+    pais = models.CharField(max_length=4, db_column='co_pais', verbose_name=u'País de Residencia')
     consulado = models.CharField(max_length=2, db_column='co_consulado', verbose_name='Nombre del consulado')
-    continentePais = models.ForeignKey(Continente, db_column='co_continentepais', related_name='paisContinente')
+    continentePais = models.CharField(max_length=4, db_column='co_continentepais')
     continenteConsulado = models.CharField(max_length=4, db_column='co_continenteconsulado')
     usuario = models.ForeignKey(User, db_column='nu_usuario')
     fecha_registro = models.DateField(db_column='fe_registro', verbose_name='Fecha de registro', auto_now_add=True)
 
+    def validate_unique(self, exclude=None):
+        """
+        Checks unique constraints on the model and raises ``ValidationError``
+        if any failed.
+        """
+        unique_checks, date_checks = self._get_unique_checks(exclude=exclude)
+        errors = self._perform_unique_checks(unique_checks)
+        date_errors = self._perform_date_checks(date_checks)
+
+        for k, v in date_errors.items():
+            errors.setdefault(k, []).extend(v)
+
+        if errors:
+            if 'dni' in errors:
+                if self.dni == '' or self.dni is None:
+                    del errors['dni']
+                else:
+                    cuestionario = Cuestionario.objects.filter(dni=self.dni)
+                    cuestionario = cuestionario.values('tomo', 'ficha')[0]
+                    msg = u'Ya existe el DNI en el siguiente tomo %s y ficha %s' % (cuestionario['tomo'], cuestionario['ficha'])
+                    errors['dni'][0] = msg
+            raise ValidationError(errors)
+
+    def _get_unique_checks(self, exclude=None):
+        """
+        Gather a list of checks to perform. Since validate_unique could be
+        called from a ModelForm, some fields may have been excluded; we can't
+        perform a unique check on a model that is missing fields involved
+        in that check.
+        Fields that did not validate should also be excluded, but they need
+        to be passed in via the exclude argument.
+        """
+        if exclude is None:
+            exclude = []
+        unique_checks = []
+
+        unique_togethers = [(self.__class__, self._meta.unique_together)]
+        for parent_class in self._meta.parents.keys():
+            if parent_class._meta.unique_together:
+                unique_togethers.append((parent_class, parent_class._meta.unique_together))
+
+        for model_class, unique_together in unique_togethers:
+            for check in unique_together:
+                unique_checks.append((model_class, tuple(check)))
+        # These are checks for the unique_for_<date/year/month>.
+        date_checks = []
+
+        # Gather a list of checks for fields declared as unique and add them to
+        # the list of checks.
+
+        fields_with_class = [(self.__class__, self._meta.local_fields)]
+        for parent_class in self._meta.parents.keys():
+            fields_with_class.append((parent_class, parent_class._meta.local_fields))
+
+        for model_class, fields in fields_with_class:
+            for f in fields:
+                name = f.name
+                if name in exclude:
+                    continue
+                if f.unique:
+                    unique_checks.append((model_class, (name,)))
+                if f.unique_for_date and f.unique_for_date not in exclude:
+                    date_checks.append((model_class, 'date', name, f.unique_for_date))
+                if f.unique_for_year and f.unique_for_year not in exclude:
+                    date_checks.append((model_class, 'year', name, f.unique_for_year))
+                if f.unique_for_month and f.unique_for_month not in exclude:
+                    date_checks.append((model_class, 'month', name, f.unique_for_month))
+        return unique_checks, date_checks
+
     class Meta:
         db_table = 'cuestionario'
-        #unique_together = ('ficha', 'tomo', 'consulado', 'continenteConsulado',)
+        unique_together = ('ficha', 'tomo', 'consulado', 'continenteConsulado',)
 
 
 class UsuarioConsulado(models.Model):

@@ -159,20 +159,22 @@ class CuestionarioForm(forms.ModelForm):
         super(CuestionarioForm, self).__init__(*args, **kwargs)
         self.fields['consulado_list'] = forms.ChoiceField(choices=getConsuladoChoices())
         self.fields['pais_list'] = forms.ChoiceField(choices=getPaisChoices())
-        if self.data.get('nu_respuesta1_6'):
-            if self.data.get('nu_respuesta1_6') == '1':
-                self.fields['no_respuesta1_6'].required = True
-                self.fields['no_respuesta1_6'].widget.attrs['readonly'] = False
-            else:
-                self.fields['no_respuesta1_6'].widget.attrs['readonly'] = True
+        if self.instance:
+            respuesta1_6 = self.instance.nu_respuesta1_6
+        else:
+            respuesta1_6 = self.data.get('nu_respuesta1_6')
+        if self.instance:
+            respuesta6 = self.instance.nu_respuesta6
+        else:
+            respuesta6 = self.data.get('nu_respuesta6')
+        if respuesta1_6 == '1':
+            self.fields['no_respuesta1_6'].required = True
+            self.fields['no_respuesta1_6'].widget.attrs['readonly'] = False
         else:
             self.fields['no_respuesta1_6'].widget.attrs['readonly'] = True
-        if self.data.get('nu_respuesta6'):
-            if self.data.get('nu_respuesta6') == '6':
-                self.fields['no_respuesta6'].required = True
-                self.fields['no_respuesta1_6'].widget.attrs['readonly'] = False
-            else:
-                self.fields['no_respuesta6'].widget.attrs['readonly'] = True
+        if respuesta6 == '6':
+            self.fields['no_respuesta6'].required = True
+            self.fields['no_respuesta1_6'].widget.attrs['readonly'] = False
         else:
             self.fields['no_respuesta6'].widget.attrs['readonly'] = True
 

@@ -140,6 +140,30 @@
         }
     });
 
+    function buscar_cuestionario(){
+        var data = $('#id_form').serialize();
+        var options = {
+            type: 'POST',
+            url: '/cuestionario/ajax/',
+            dataType: 'json',
+            async: true,
+            data: data,
+            beforeSend: function() {
+            }
+        };
+        var posting = $.ajax(options);
+        posting.done(function(data, textStatus, jqXHR) {
+            if(data['success']){
+                 location.href = '/cuestionario/'+ data['data'] +'/';
+            }else{
+                alert(data['data']);
+            }
+        })
+        .fail(function(data, textStatus, jqXHR) {
+            alert('Ha ocurrido un error inesperado'+textStatus);
+        });
+    }
+
     function save_cuestionario(){
         var data = $('#id_form').serialize();
         var options = {
@@ -156,7 +180,7 @@
 
         posting.done(function(data, textStatus, jqXHR) {
             if(data['success']){
-                location.href = '';
+                location.href = '/cuestionario/';
             }else{
                 //activate_tooltips();
                 $('.alert-error').removeClass('alert-error');
@@ -190,7 +214,7 @@
             }
         })
         .fail(function(data, textStatus, jqXHR) {
-            alert('Ha ocurrido un error inesperado');
+            alert('Ha ocurrido un error inesperado'+textStatus);
         });
     }
 

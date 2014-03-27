@@ -3,9 +3,10 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import FormView, TemplateView
-from django.http.response import HttpResponseRedirect, HttpResponse
+from django.http.response import HttpResponseRedirect, HttpResponse, Http404
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
+from django.views.generic.edit import UpdateView
 from inei.auth.forms import LoginForm
 from django.contrib.auth import login, authenticate, logout
 import json
@@ -75,32 +76,20 @@ class CuestionarioView(FormView):
         response = HttpResponse(json.dumps(self.save()), content_type="application/json")
         return response
 
-    # def get_context_data(self, **kwargs):
-    #     ctx = super(CuestionarioView, self).get_context_data(**kwargs)
-    #     if UsuarioConsulado.objects.filter(usuario=self.request.user).exists():
-    #         ctx['pre_data'] = UsuarioConsulado.objects.filter(usuario=self.request.user)[0]
-    #     return ctx
-
     def save(self):
         _consulado = self.request.POST.get('consulado_list')
         _pais = self.request.POST.get('pais_list')
-        cuestionario = None
+        cuestionario = Cuestionario(usuario=self.request.user)
         if _consulado:
             _consulado = _consulado.split('-')
-            _pais = _pais.split('-')
-            try:
-                # consulado = Consulado.objects.get(id=_consulado[0], continente=_consulado[1])
-                pais = Pais.objects.get(id=_pais[0])
-                continentePais = pais.continente
-                # continenteConsulado = consulado.continente
-            except Exception:
-                consulado = Consulado()
-                continentePais = Continente()
-                # continenteConsulado = Continente()
-                pais = Pais()
-            cuestionario = Cuestionario(usuario=self.request.user, consulado=_consulado[0], continentePais=continentePais,
-                                        continenteConsulado=_consulado[1], pais=pais)
+            cuestionario.consulado = _consulado[0]
+            cuestionario.continenteConsulado = _consulado[1]
+        if _pais:
+            _pais.split('-')
+            cuestionario.pais = _pais[0]
+            cuestionario.continentePais =  continentePais=_pais[1]
         form = CuestionarioForm(self.request.POST, instance=cuestionario)
+
         if form.is_valid():
             response = {
                 'success': True,
@@ -119,6 +108,98 @@ class CuestionarioView(FormView):
                 'error': True,
                 'data': form.errors
             }
+        return response
+
+
+class CuestionarioDetailView(UpdateView):
+    model = Cuestionario
+    template_name = 'cuestionario/cuestionario.html'
+    form_class = CuestionarioForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(CuestionarioDetailView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        response = HttpResponse(json.dumps(self.save()), content_type="application/json")
+        return response
+
+    def get_initial(self):
+        initial = super(CuestionarioDetailView, self).get_initial()
+        continente = Continente.objects.get(id=self.object.continenteConsulado)
+        continente_pais = Continente.objects.get(id=self.object.continentePais)
+        initial['consulado_list'] = '%s-%s-%s' % (self.object.consulado, self.object.continenteConsulado,
+                                                  continente.nombre)
+        initial['pais_list'] = '%s-%s-%s' % (self.object.pais, self.object.continentePais,
+                                                  continente_pais.nombre)
+        return initial
+
+    def save(self):
+        _consulado = self.request.POST.get('consulado_list')
+        _pais = self.request.POST.get('pais_list')
+        cuestionario = self.get_object()
+        if _consulado:
+            _consulado = _consulado.split('-')
+            cuestionario.consulado = _consulado[0]
+            cuestionario.continenteConsulado = _consulado[1]
+        if _pais:
+            _pais = _pais.split('-')
+            cuestionario.pais = _pais[0]
+            cuestionario.continentePais = _pais[1]
+        form = CuestionarioForm(self.request.POST, instance=cuestionario)
+        if form.is_valid():
+            response = {
+                'success': True,
+                'error': None,
+                'data': 'Todo bien'
+            }
+            try:
+                form.save()
+            except Exception as e:
+                response['success'] = False
+                response['error'] = True
+                response['data'] = 'duplicado'
+        else:
+            response = {
+                'success': False,
+                'error': True,
+                'data': form.errors
+            }
+        return response
+
+
+class CuestionarioAjaxView(TemplateView):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            raise Http404("Only ajax.")
+        return super(CuestionarioAjaxView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        tomo = request.POST['tomo']
+        ficha = request.POST['ficha']
+        _consulado = request.POST.get('consulado_list')
+        if _consulado == '' or _consulado is None:
+            _consulado = "-"
+        _consulado = _consulado.split('-')
+        cuestionario = Cuestionario.objects.filter(tomo=tomo, ficha=ficha, consulado=_consulado[0],
+                                                   continenteConsulado=_consulado[1])
+        pk = None
+        if cuestionario.exists():
+            pk = cuestionario.values_list('id')[0]
+
+        if pk is None:
+            data = {
+                'success': False,
+                'error': True,
+                'data': 'No existe la ficha buscada'
+            }
+        else:
+            data = {
+                'success': True,
+                'error': False,
+                'data': pk
+            }
+        response = HttpResponse(json.dumps(data), content_type="application/json")
         return response
 
 

@@ -76,7 +76,7 @@
                             </div>
                             <div class="widget-body">
 
-                                <form class="form-horizontal no-margin" id="id_form" name="form">
+                                <form class="form-horizontal no-margin" id="id_form" name="form" method="POST">
                                     {% csrf_token %}
                                     <div class="tab-content" id="myTabContent">
                                         <div id="step1" class="tab-pane fade active in">
@@ -94,6 +94,7 @@
                                                         <label class="control-label" id="lid_ficha" for="id_ficha">Ficha N°:</label>
                                                         <div class="controls">
                                                             {{ form.ficha }}
+                                                            <button type="button" class="btn btn-info pull-right" onclick="buscar_cuestionario();"> Buscar  </button>
                                                         </div>
                                                     </div>
                                                 </div>
