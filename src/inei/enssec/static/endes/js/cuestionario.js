@@ -144,7 +144,7 @@
         var data = $('#id_form').serialize();
         var options = {
             type: 'POST',
-            url: '/cuestionario/ajax/',
+            url: '/enssec/cuestionario/ajax/',
             dataType: 'json',
             async: true,
             data: data,
@@ -180,7 +180,7 @@
 
         posting.done(function(data, textStatus, jqXHR) {
             if(data['success']){
-                location.href = '/cuestionario/';
+                location.href = '/enssec/cuestionario/';
             }else{
                 //activate_tooltips();
                 $('.alert-error').removeClass('alert-error');
