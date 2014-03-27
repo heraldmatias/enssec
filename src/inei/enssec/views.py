@@ -40,6 +40,8 @@ class IndexView(FormView):
                 #print self.request.user
                 id = user.id or 0
                 login(self.request, user)
+                if user.is_superuser:
+                    return HttpResponseRedirect(reverse('cuestionario-admin'))
                 return HttpResponseRedirect(self.get_success_url())
             else:
                 #cuenta deshabilitada
