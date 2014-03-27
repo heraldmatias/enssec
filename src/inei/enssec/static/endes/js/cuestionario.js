@@ -161,6 +161,11 @@
                 //activate_tooltips();
                 $('.alert-error').removeClass('alert-error');
                 var msg='Corrija los errores marcados en rojo porfavor!';
+                if(data['data']==='duplicado'){
+                    alert('Ya existe la ficha y tomo digitado en el consulado');
+                    $('#lid_ficha').addClass('alert-error');
+                    $('#lid_tomo').addClass('alert-error');
+                }else{
                 $.each(data['data'],function(k,v){
                     if($.inArray(k, ['nu_respuesta1_1','nu_respuesta1_2','nu_respuesta1_3','nu_respuesta1_4','nu_respuesta1_5','nu_respuesta1_6']) !== -1){
                         $('#id_'+k).parent().addClass('alert-error');
@@ -181,6 +186,7 @@
                     }
                 });
                 alert(msg);
+                }
             }
         })
         .fail(function(data, textStatus, jqXHR) {

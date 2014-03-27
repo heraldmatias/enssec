@@ -89,25 +89,30 @@ class CuestionarioView(FormView):
             _consulado = _consulado.split('-')
             _pais = _pais.split('-')
             try:
-                consulado = Consulado.objects.get(id=_consulado[0], continente=_consulado[1])
+                # consulado = Consulado.objects.get(id=_consulado[0], continente=_consulado[1])
                 pais = Pais.objects.get(id=_pais[0])
                 continentePais = pais.continente
-                continenteConsulado = consulado.continente
+                # continenteConsulado = consulado.continente
             except Exception:
                 consulado = Consulado()
                 continentePais = Continente()
-                continenteConsulado = Continente()
+                # continenteConsulado = Continente()
                 pais = Pais()
-            cuestionario = Cuestionario(usuario=self.request.user, consulado=consulado, continentePais=continentePais,
-                                        continenteConsulado=continenteConsulado, pais=pais)
+            cuestionario = Cuestionario(usuario=self.request.user, consulado=_consulado[0], continentePais=continentePais,
+                                        continenteConsulado=_consulado[1], pais=pais)
         form = CuestionarioForm(self.request.POST, instance=cuestionario)
         if form.is_valid():
-            form.save()
             response = {
                 'success': True,
                 'error': None,
                 'data': 'Todo bien'
             }
+            try:
+                form.save()
+            except Exception:
+                response['success'] = False
+                response['error'] = True
+                response['data'] = 'duplicado'
         else:
             response = {
                 'success': False,
