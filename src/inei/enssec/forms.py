@@ -202,7 +202,7 @@ class CuestionarioForm(forms.ModelForm):
             'encuestado': forms.TextInput(attrs={'class': 'span12 texto'}),
             'observacion': forms.Textarea(attrs={'class': 'span12 texto', 'rows': 2}),
             'ciudadResidencia': forms.TextInput(attrs={'class': 'span12 texto'}),
-            'ficha': forms.TextInput(attrs={'class': 'span6 numero'})
+            'ficha': forms.TextInput(attrs={'class': 'span3 numero'})
         }
         exclude = ('usuario', 'continentePais', 'continenteConsulado', 'consulado', 'pais', )
 

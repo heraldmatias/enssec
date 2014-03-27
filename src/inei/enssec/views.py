@@ -225,7 +225,7 @@ class TotalDigitacionListView(ListView):
     def get_queryset(self):
         qs = super(TotalDigitacionListView, self).get_queryset()
         filtro = {}
-        if 'date_range' in self.request.GET:
+        if self.request.GET.get('date_range'):
             date_range = self.request.GET['date_range'].split(' | ')
             filtro['fecha__range'] = date_range
         qs = qs.filter(**filtro)
@@ -252,7 +252,7 @@ class ResumenDigitacionListView(ListView):
     def get_queryset(self):
         qs = super(ResumenDigitacionListView, self).get_queryset()
         filtro = {}
-        if 'date_range' in self.request.GET:
+        if self.request.GET.get('date_range'):
             date_range = self.request.GET['date_range'].split(' | ')
             filtro['fecha__range'] = date_range
         if 'digitador' in self.request.GET:

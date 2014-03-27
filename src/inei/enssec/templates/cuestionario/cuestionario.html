@@ -81,20 +81,21 @@
                                     <div class="tab-content" id="myTabContent">
                                         <div id="step1" class="tab-pane fade active in">
                                             <div class="row-fluid">
-                                                <div style="float: left">
+                                                <div style="float: left;">
                                                     <div class="control-group">
-                                                        <label class="control-label" id="lid_tomo" for="id_tomo">N° Tomo:</label>
-                                                        <div class="controls">
+                                                        <label style="float: left;width: 80px;padding-top: 5px;text-align: right;" id="lid_tomo" for="id_tomo">N° Tomo:</label>
+                                                        <div style="margin-left: 111px;">
                                                             {{ form.tomo }}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div style="float: right">
                                                     <div class="control-group">
-                                                        <label class="control-label" id="lid_ficha" for="id_ficha">Ficha N°:</label>
-                                                        <div class="controls">
+                                                        <label style="float: left;width: 80px;padding-top: 5px;text-align: right;" id="lid_ficha" for="id_ficha">Ficha N°:</label>
+                                                        <div style="margin-left: 111px;">
                                                             {{ form.ficha }}
-                                                            <button type="button" class="btn btn-info pull-right" onclick="buscar_cuestionario();"> Buscar  </button>
+                                                            <button type="button" class="btn btn-info pull-right" href="{% url 'cuestionario1' %}"> Nuevo</button>
+                                                            <button type="button" class="btn btn-info pull-right" onclick="buscar_cuestionario();"> Buscar</button>
                                                         </div>
                                                     </div>
                                                 </div>

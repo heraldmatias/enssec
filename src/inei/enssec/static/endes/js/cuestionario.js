@@ -157,6 +157,7 @@
                  location.href = '/enssec/cuestionario/'+ data['data'] +'/';
             }else{
                 alert(data['data']);
+                location.href = '/enssec/cuestionario/';
             }
         })
         .fail(function(data, textStatus, jqXHR) {
