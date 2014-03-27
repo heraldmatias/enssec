@@ -154,7 +154,7 @@
         var posting = $.ajax(options);
         posting.done(function(data, textStatus, jqXHR) {
             if(data['success']){
-                 location.href = '/cuestionario/'+ data['data'] +'/';
+                 location.href = '/enssec/cuestionario/'+ data['data'] +'/';
             }else{
                 alert(data['data']);
             }
