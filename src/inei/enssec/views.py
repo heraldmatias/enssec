@@ -243,7 +243,7 @@ class TotalDigitacionListView(ListView):
 class ResumenDigitacionListView(ListView):
     model = ResumenDigitacion
     template_name = 'cuestionario/resumen-digitacion.html'
-    paginate_by = 2
+    paginate_by = 10
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
