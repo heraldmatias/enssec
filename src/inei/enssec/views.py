@@ -158,7 +158,7 @@ class CuestionarioDetailView(UpdateView):
             except Exception as e:
                 response['success'] = False
                 response['error'] = True
-                response['data'] = 'duplicado'
+                response['data'] = e.message
         else:
             response = {
                 'success': False,
@@ -241,7 +241,7 @@ class TotalDigitacionListView(ListView):
 class ResumenDigitacionListView(ListView):
     model = ResumenDigitacion
     template_name = 'cuestionario/resumen-digitacion.html'
-    paginate_by = 10
+    paginate_by = 2
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
