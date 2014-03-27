@@ -98,10 +98,10 @@ class CuestionarioView(FormView):
             }
             try:
                 form.save()
-            except Exception:
+            except Exception as e:
                 response['success'] = False
                 response['error'] = True
-                response['data'] = 'duplicado'
+                response['data'] = e.message
         else:
             response = {
                 'success': False,
