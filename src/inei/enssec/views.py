@@ -85,7 +85,7 @@ class CuestionarioView(FormView):
             cuestionario.consulado = _consulado[0]
             cuestionario.continenteConsulado = _consulado[1]
         if _pais:
-            _pais.split('-')
+            _pais = _pais.split('-')
             cuestionario.pais = _pais[0]
             cuestionario.continentePais = _pais[1]
         form = CuestionarioForm(self.request.POST, instance=cuestionario)
