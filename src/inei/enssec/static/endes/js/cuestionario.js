@@ -230,7 +230,7 @@
     function nextControlEnter(){
         //$('#id_consulado_list_chosen').addClass('chosen-disabled');
         var textoSiguiente = Array();
-        textoSiguiente['id_ficha'] = [2, '#id_consulado_list', true];
+        textoSiguiente['id_ficha'] = [1, '#id_fecha_day', true];
         textoSiguiente['id_fecha_day'] = [1, '#id_fecha_month', true];
         textoSiguiente['id_fecha_month'] = [1, '#id_fecha_year', true];
         textoSiguiente['id_fecha_year'] = [2, '#id_pais_list', true];
