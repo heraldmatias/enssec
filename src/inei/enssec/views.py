@@ -71,7 +71,7 @@ class CuestionarioView(FormView):
         if UsuarioConsulado.objects.filter(usuario=self.request.user).exists():
             pre_data = UsuarioConsulado.objects.filter(usuario=self.request.user)[0]
             self.initial['tomo'] = pre_data.tomo
-            self.initial['consulado_list'] = '%s-%s-%s' % (pre_data.consulado, pre_data.continente.id, pre_data.continente.nombre)
+            # self.initial['consulado_list'] = '%s-%s-%s' % (pre_data.consulado, pre_data.continente.id, pre_data.continente.nombre)
         return super(CuestionarioView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
