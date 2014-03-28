@@ -71,7 +71,7 @@ class CuestionarioView(FormView):
         if UsuarioConsulado.objects.filter(usuario=self.request.user).exists():
             pre_data = UsuarioConsulado.objects.filter(usuario=self.request.user)[0]
             self.initial['tomo'] = pre_data.tomo
-            # self.initial['consulado_list'] = '%s-%s-%s' % (pre_data.consulado, pre_data.continente.id, pre_data.continente.nombre)
+            self.initial['consulado_list'] = self.request.session.get('consulado')#'%s-%s-%s' % (pre_data.consulado, pre_data.continente.id, pre_data.continente.nombre)
         return super(CuestionarioView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -83,6 +83,7 @@ class CuestionarioView(FormView):
         _pais = self.request.POST.get('pais_list')
         cuestionario = Cuestionario(usuario=self.request.user)
         if _consulado:
+            self.request.session['consulado'] = _consulado
             _consulado = _consulado.split('-')
             cuestionario.consulado = _consulado[0]
             cuestionario.continenteConsulado = _consulado[1]
