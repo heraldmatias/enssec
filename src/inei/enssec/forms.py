@@ -133,6 +133,12 @@ class CustomSelectDateWidget(SelectDateWidget):
                 output.append(day_html)
         return mark_safe('\n'.join(output))
 
+    def value_from_datadict(self, data, files, name):
+        y = data.get(self.year_field % name)
+        m = data.get(self.month_field % name)
+        d = data.get(self.day_field % name)
+        return '%s-%s-%s' % (y, m, d)
+
 
 class CuestionarioForm(forms.ModelForm):
 
