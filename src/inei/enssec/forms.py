@@ -23,7 +23,7 @@ RE_DATE = re.compile(r'(\d{4})-(\d\d?)-(\d\d?)$')
 MONTHS = {
     1: '01', 2: '02', 3: '03', 4: '04', 5: '05', 6: '06',
     7: '07', 8: '08', 9: '09', 10: '10', 11: '11',
-    12: '12'
+    12: '12', 99: '99'
 }
 
 class RadioFieldRenderer2(RadioFieldRenderer):
@@ -100,7 +100,7 @@ class CSIMultipleChoiceField(MultipleChoiceField):
 class CustomSelectDateWidget(SelectDateWidget):
     def render(self, name, value, attrs=None):
         try:
-            year_val, month_val, day_val = value.year, value.month, value.day
+            year_val, month_val, day_val = value.split('-')
         except AttributeError:
             year_val = month_val = day_val = None
             if isinstance(value, six.string_types):
@@ -115,11 +115,12 @@ class CustomSelectDateWidget(SelectDateWidget):
                     match = RE_DATE.match(value)
                     if match:
                         year_val, month_val, day_val = [int(v) for v in match.groups()]
-        choices = [(i, i) for i in self.years]
+        choices = [(2000+i, i) for i in self.years]
         year_html = self.create_select(name, self.year_field, value, year_val, choices)
         choices = list(six.iteritems(MONTHS))
         month_html = self.create_select(name, self.month_field, value, month_val, choices)
-        choices = [(i, i) for i in range(1, 32)]
+        choices = [(i, "%02d" % i) for i in range(1, 32)]
+        choices.append((99, '99'))
         day_html = self.create_select(name, self.day_field, value, day_val,  choices)
 
         output = []
@@ -131,26 +132,6 @@ class CustomSelectDateWidget(SelectDateWidget):
             elif field == 'day':
                 output.append(day_html)
         return mark_safe('\n'.join(output))
-
-    def value_from_datadict(self, data, files, name):
-        y = data.get(self.year_field % name)
-        m = data.get(self.month_field % name)
-        d = data.get(self.day_field % name)
-        if y == m == d == "0":
-            return None
-        if y and m and d:
-            if settings.USE_L10N:
-                input_format = get_format('DATE_INPUT_FORMATS')[0]
-                try:
-                    date_value = datetime.date(2000+int(y), int(m), int(d))
-                except ValueError:
-                    return '%s-%s-%s' % (y, m, d)
-                else:
-                    date_value = datetime_safe.new_date(date_value)
-                    return date_value.strftime(input_format)
-            else:
-                return '%s-%s-%s' % (y, m, d)
-        return data.get(name, None)
 
 
 class CuestionarioForm(forms.ModelForm):
@@ -195,7 +176,7 @@ class CuestionarioForm(forms.ModelForm):
             'nu_respuesta6': forms.TextInput(attrs={'class': 'span1 numero'}),
             'no_respuesta6': forms.TextInput(attrs={'class': 'span12 texto'}),
             'tomo': forms.TextInput(attrs={'class': 'span3   numero', 'readonly': 'readonly'}),
-            'fecha': CustomSelectDateWidget(years=(13, 14)),
+            'fecha': CustomSelectDateWidget(years=(13, 14, 99)),
             'edad': forms.TextInput(attrs={'class': 'span12 numero', 'maxlength': 2}),
             'dni': forms.TextInput(attrs={'class': 'span12 numero'}),
             'sexo': forms.Select(attrs={'class': 'span12'}),

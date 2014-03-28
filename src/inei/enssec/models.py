@@ -125,7 +125,7 @@ class Pais(models.Model):
 class Cuestionario(models.Model):
     ficha = models.CharField(max_length=4, db_column='co_ficha')
     tomo = models.CharField(max_length=2, db_column='nu_tomo')
-    fecha = models.DateField(db_column='fe_encuesta', verbose_name='Fecha de la encuesta')
+    fecha = models.CharField(max_length=10, db_column='fe_encuesta', verbose_name='Fecha de la encuesta')
     edad = models.IntegerField(db_column='nu_edad', validators=[validate_edad], max_length=2)
     ciudadResidencia = models.CharField(max_length=70, db_column='no_ciudadresidencia')
     sexo = models.CharField(db_column='fl_sexo', max_length=1, choices=SEXO)
