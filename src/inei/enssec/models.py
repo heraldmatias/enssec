@@ -255,6 +255,7 @@ class ResumenDigitacion(models.Model):
     codigo_digitador = models.IntegerField(db_column='codigo_digitador')
     usuario = models.CharField(max_length=30, db_column='digitador_usuario')
     ficha = models.CharField(max_length=4, db_column='ficha')
+    consulado = models.CharField(max_length=70, db_column='no_consulado')
     tomo = models.CharField(max_length=2, db_column='tomo')
 
     class Meta:

@@ -80,6 +80,7 @@
                                                             <tr>
                                                                 <th>Fecha</th>
                                                                 <th>Digitador</th>
+                                                                <th>Consulado</th>
                                                                 <th>Numero Tomo</th>
                                                                 <th>Numero Ficha</th>
                                                                 <th>Opciones</th>
@@ -90,6 +91,7 @@
                                                             <tr>
                                                                 <td>{{ item.fecha }}</td>
                                                                 <td>{{ item.usuario }}</td>
+                                                                <td>{{ item.consulado }}</td>
                                                                 <td>{{ item.tomo}}</td>
                                                                 <td>{{ item.ficha }}</td>
                                                                 <td><a href="{% url 'cuestionario-view' item.id %}"><i class="icon-edit"></i></a></td>
