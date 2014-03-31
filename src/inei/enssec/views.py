@@ -258,7 +258,7 @@ class ResumenDigitacionListView(ListView):
         if self.request.GET.get('date_range'):
             date_range = self.request.GET['date_range'].split(' | ')
             filtro['fecha__range'] = date_range
-        if 'digitador' in self.request.GET:
+        if self.request.GET.get('digitador'):
             filtro['codigo_digitador'] = self.request.GET['digitador']
         qs = qs.filter(**filtro)
         return qs
@@ -273,7 +273,7 @@ class ResumenDigitacionListView(ListView):
 class TotalDigitacionConsuladoListView(ListView):
     model = TotalDigitacionConsulado
     template_name = 'cuestionario/total-digitacion-consulado.html'
-    paginate_by = 10
+    paginate_by = 20
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
