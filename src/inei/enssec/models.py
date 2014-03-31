@@ -241,6 +241,7 @@ class TotalDigitacion(models.Model):
     fecha = models.DateField(db_column='fecha', verbose_name='Fecha de la encuesta')
     digitador = models.CharField(max_length=60, db_column='digitador_nombre')
     usuario = models.CharField(max_length=30, db_column='digitador_usuario')
+    consulado = models.CharField(max_length=70, db_column='consulado')
     fichas = models.IntegerField(db_column='fichas')
 
     class Meta:
@@ -259,3 +260,17 @@ class ResumenDigitacion(models.Model):
     class Meta:
         managed = False
         db_table = 'lv_resumen_digitacion'
+
+
+class TotalDigitacionConsulado(models.Model):
+    consulado = models.CharField(max_length=30, db_column='no_consulado')
+    tomo = models.IntegerField(db_column='nu_tomo')
+    meta = models.IntegerField(db_column='nu_meta')
+    encuestas = models.IntegerField(db_column='nu_encuestas')
+    recepcionado = models.IntegerField(db_column='nu_recepcionado')
+    repetidos = models.IntegerField(db_column='nu_fichasrepetidas')
+    fichas = models.IntegerField(db_column='fichas')
+
+    class Meta:
+        managed = False
+        db_table = 'lv_total_digitacion_consulado'

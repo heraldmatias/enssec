@@ -1,7 +1,9 @@
+from inei.enssec.models import TotalDigitacionConsulado
+
 __author__ = 'holivares'
 
 from django.conf.urls import patterns, url
-from inei.enssec.views import (IndexView, CuestionarioView, SignOut, TotalDigitacionListView,
+from inei.enssec.views import (IndexView, CuestionarioView, SignOut, TotalDigitacionListView, TotalDigitacionConsuladoListView,
                                ResumenDigitacionListView, AdminView, CuestionarioDetailView, CuestionarioAjaxView)
 
 urlpatterns = patterns('',
@@ -12,5 +14,7 @@ urlpatterns = patterns('',
                        url(r'^cuestionario/admin/$', AdminView.as_view(), name='cuestionario-admin'),
                        url(r'^cuestionario/total/$', TotalDigitacionListView.as_view(), name='cuestionario-total'),
                        url(r'^cuestionario/resumen/$', ResumenDigitacionListView.as_view(), name='cuestionario-resumen'),
+                       url(r'^cuestionario/total/consulado/$', TotalDigitacionConsuladoListView.as_view(),
+                           name='cuestionario-total-consulado'),
                        url(r'^logout/$', SignOut.as_view(), name='logout'),
 )

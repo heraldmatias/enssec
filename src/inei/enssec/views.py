@@ -12,7 +12,7 @@ from django.contrib.auth import login, authenticate, logout
 import json
 from inei.enssec.forms import CuestionarioForm, TotalDigitacionForm, ResumenDigitacionForm
 from inei.enssec.models import Cuestionario, Consulado, Continente, Pais, UsuarioConsulado, \
-    TotalDigitacion, ResumenDigitacion
+    TotalDigitacion, ResumenDigitacion, TotalDigitacionConsulado
 
 __author__ = 'holivares'
 
@@ -268,3 +268,15 @@ class ResumenDigitacionListView(ListView):
         form = ResumenDigitacionForm(self.request.GET)
         ctx['form'] = form
         return ctx
+
+
+class TotalDigitacionConsuladoListView(ListView):
+    model = TotalDigitacionConsulado
+    template_name = 'cuestionario/total-digitacion-consulado.html'
+    paginate_by = 10
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if not self.request.user.is_superuser:
+            return HttpResponseRedirect('/cuestionario/')
+        return super(TotalDigitacionConsuladoListView, self).dispatch(*args, **kwargs)
