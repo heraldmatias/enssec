@@ -57,7 +57,7 @@ SEXO = (
 
 
 def validate_edad(value):
-    if value < 18:
+    if value < 15:
         raise ValidationError('Su edad debe ser mayor a 18')
 
 
